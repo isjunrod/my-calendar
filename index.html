@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Plan de inglés · B2 diciembre</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F7F6F3; --panel:#FFFFFF; --line:#E3E1DB;
+  --ink:#1A1A17; --ink-2:#5E5C56; --ink-3:#8C8A83;
+  --input:#2F4BA8; --input-bg:#EAEEFA;
+  --output:#A8326B; --output-bg:#FAEAF1;
+  --lengua:#9A6207; --lengua-bg:#FBF2E2;
+  --fluidez:#0E6E5E; --fluidez-bg:#E4F2EF;
+  --radius:14px;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:border-box}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#121210; --panel:#1B1B18; --line:#2E2E2A;
+    --ink:#F0EEE8; --ink-2:#A6A39B; --ink-3:#77746D;
+    --input:#9FB4F0; --input-bg:#1C2442;
+    --output:#EFA0C4; --output-bg:#3A1F2D;
+    --lengua:#E7B65F; --lengua-bg:#38290F;
+    --fluidez:#6FCCB8; --fluidez-bg:#11302B;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121210; --panel:#1B1B18; --line:#2E2E2A;
+  --ink:#F0EEE8; --ink-2:#A6A39B; --ink-3:#77746D;
+  --input:#9FB4F0; --input-bg:#1C2442;
+  --output:#EFA0C4; --output-bg:#3A1F2D;
+  --lengua:#E7B65F; --lengua-bg:#38290F;
+  --fluidez:#6FCCB8; --fluidez-bg:#11302B;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Instrument Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+  font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:36px 20px 72px}
+
+.masthead{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:24px}
+h1{font-size:clamp(28px,5vw,44px);line-height:1.02;letter-spacing:-.025em;font-weight:600;margin:0;max-width:16ch}
+.deadline{text-align:right;color:var(--ink-2);font-size:13.5px;line-height:1.35}
+.deadline b{display:block;color:var(--ink);font-size:27px;font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+
+.now{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:17px 20px;margin-bottom:11px;display:flex;align-items:baseline;gap:13px;flex-wrap:wrap}
+.now-tag{font-size:13px;color:var(--ink-3);font-weight:500;flex-shrink:0}
+.now-txt{font-size:18px;font-weight:500;letter-spacing:-.01em;margin:0}
+.now-time{font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums;margin-left:auto;flex-shrink:0}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:10px;margin-bottom:11px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.stat span{display:block;font-size:12.5px;color:var(--ink-2);margin-bottom:3px}
+.stat b{font-size:21px;font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-bottom:11px}
+.panel h2{font-size:18px;font-weight:600;letter-spacing:-.02em;margin:0 0 4px}
+.panel .hint{font-size:13.5px;color:var(--ink-2);margin:0 0 15px;max-width:62ch}
+
+.ctrl{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+label.fld{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--ink-2)}
+input[type=time],select{
+  font-family:inherit;font-size:15px;padding:9px 11px;border-radius:9px;
+  border:1px solid var(--line);background:var(--bg);color:var(--ink);min-height:42px}
+button{font-family:inherit;font-size:14.5px;font-weight:500;padding:11px 18px;border-radius:9px;
+  border:1px solid var(--ink);background:var(--ink);color:var(--bg);cursor:pointer;min-height:42px}
+button.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--input);outline-offset:2px}
+
+.prog{height:9px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:6px}
+.prog i{display:block;height:100%;background:var(--fluidez);border-radius:99px}
+
+.legend{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0}
+.tag{font-size:13px;padding:5px 12px;border-radius:99px;font-weight:500}
+.t-input{background:var(--input-bg);color:var(--input)}
+.t-output{background:var(--output-bg);color:var(--output)}
+.t-lengua{background:var(--lengua-bg);color:var(--lengua)}
+.t-fluidez{background:var(--fluidez-bg);color:var(--fluidez)}
+
+.days{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px;align-items:start}
+.day{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
+.day h2{font-size:19px;font-weight:600;letter-spacing:-.02em;margin:0 0 2px}
+.day .meta{font-size:13px;color:var(--ink-2);margin:0 0 16px}
+
+.blk{border-left:3px solid;border-radius:0 9px 9px 0;padding:9px 12px;margin-bottom:6px;
+  display:flex;gap:10px;align-items:flex-start}
+.blk-main{flex:1;min-width:0}
+.blk-head{font-size:11.5px;font-weight:600;font-variant-numeric:tabular-nums;margin:0 0 2px;opacity:.85}
+.blk-body{font-size:13.5px;margin:0;line-height:1.38}
+.b-input{border-color:var(--input);background:var(--input-bg);color:var(--input)}
+.b-output{border-color:var(--output);background:var(--output-bg);color:var(--output)}
+.b-lengua{border-color:var(--lengua);background:var(--lengua-bg);color:var(--lengua)}
+.b-fluidez{border-color:var(--fluidez);background:var(--fluidez-bg);color:var(--fluidez)}
+.b-off{border-color:var(--line);background:transparent;color:var(--ink-2)}
+.chk{width:21px;height:21px;flex-shrink:0;margin-top:2px;accent-color:currentColor;cursor:pointer}
+.done .blk-body,.done .blk-head{opacity:.45;text-decoration:line-through}
+
+.pause{font-size:11.5px;color:var(--ink-3);margin:0 0 6px;padding-left:13px}
+.pause-long{font-size:11.5px;color:var(--ink-2);font-weight:500;margin:6px 0 11px;
+  padding:6px 12px;background:var(--bg);border-radius:7px}
+.day .close{font-size:12.5px;color:var(--ink-2);margin:12px 0 0;padding-top:11px;border-top:1px solid var(--line)}
+
+.rules{margin-top:22px}
+.rules ul{margin:0;padding-left:19px;display:flex;flex-direction:column;gap:9px}
+.rules li{font-size:14.5px;line-height:1.5;color:var(--ink-2)}
+.rules b{color:var(--ink);font-weight:600}
+
+details{margin-top:11px}
+summary{cursor:pointer;font-size:14.5px;font-weight:500;padding:6px 0}
+footer{margin-top:26px;font-size:13px;color:var(--ink-3)}
+
+@media (max-width:560px){
+  .wrap{padding:24px 15px 52px}
+  .masthead{align-items:flex-start}
+  .deadline{text-align:left}
+  .now-time{margin-left:0;width:100%}
+  .ctrl{flex-direction:column;align-items:stretch}
+  label.fld{width:100%}
+  input[type=time],select,button{width:100%}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="masthead">
+    <h1>Plan de inglés de Junior</h1>
+    <div class="deadline">
+      Examen EF SET de control<br>
+      <b id="countdown">15 nov</b>
+      meta: 40 puntos
+    </div>
+  </div>
+
+  <div class="now">
+    <span class="now-tag">Ahora</span>
+    <p class="now-txt" id="nowText">Cargando…</p>
+    <span class="now-time" id="nowTime"></span>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><span>Arriba</span><b>8:00</b></div>
+    <div class="stat"><span>Dormido</span><b>1:00</b></div>
+    <div class="stat"><span>Hoy llevas</span><b id="stHoy">0:00</b></div>
+    <div class="stat"><span>Racha Anki</span><b id="stRacha">0</b></div>
+    <div class="stat"><span>Horas totales</span><b id="stTotal">0</b></div>
+  </div>
+
+  <section class="panel">
+    <h2>Arranqué tarde</h2>
+    <p class="hint">Pon la hora en la que empiezas de verdad y te reordeno el día completo: mete primero lo que más pesa para tu B2 y respeta tus pares de bloques con descanso. Lo que no entre, cae por el final.</p>
+    <div class="ctrl">
+      <label class="fld">Empiezo a las
+        <input type="time" id="inHora">
+      </label>
+      <label class="fld">Día
+        <select id="inDia">
+          <option value="auto">Hoy</option>
+          <option value="1">Lunes</option>
+          <option value="2">Martes</option>
+          <option value="3">Miércoles</option>
+          <option value="4">Jueves</option>
+          <option value="5">Viernes</option>
+          <option value="6">Sábado</option>
+          <option value="0">Domingo</option>
+        </select>
+      </label>
+      <label class="fld">Cierro a la
+        <select id="inTope">
+          <option value="1500">1:00 am</option>
+          <option value="1440">00:00</option>
+          <option value="1380">23:00</option>
+          <option value="1320">22:00</option>
+        </select>
+      </label>
+      <button id="btnRe">Reordenar el día</button>
+      <button class="ghost" id="btnNormal">Volver al plan normal</button>
+    </div>
+  </section>
+
+  <section class="panel" id="hoyPanel">
+    <h2 id="hoyTit">Hoy</h2>
+    <p class="hint" id="hoySub"></p>
+    <div id="hoyBlocks"></div>
+  </section>
+
+  <section class="panel">
+    <h2>Camino a B2</h2>
+    <p class="hint">Desde A1 hasta B2 son unas 400 horas de estudio real. Esta barra cuenta solo los bloques que marcaste como hechos, no los planeados.</p>
+    <div class="prog"><i id="progBar" style="width:0%"></i></div>
+    <p class="hint" style="margin:8px 0 0" id="progTxt">0 de 400 horas</p>
+  </section>
+
+  <div class="legend">
+    <span class="tag t-input">Input · meto inglés</span>
+    <span class="tag t-output">Output · produzco</span>
+    <span class="tag t-lengua">Lengua · estudio piezas</span>
+    <span class="tag t-fluidez">Fluidez · uso lo que ya sé</span>
+  </div>
+
+  <details>
+    <summary>Ver la semana completa</summary>
+    <div class="days" style="margin-top:14px">
+
+      <section class="day">
+        <h2>Lunes a jueves</h2>
+        <p class="meta">5 h · 6 bloques · los cuatro días iguales</p>
+        <div class="blk b-output"><div class="blk-main"><p class="blk-head">17:00 – 17:50 · speaking</p><p class="blk-body">Sesión con Bibi</p></div></div>
+        <p class="pause">10 min</p>
+        <div class="blk b-lengua"><div class="blk-main"><p class="blk-head">18:00 – 18:50 · vocabulario</p><p class="blk-body">Anki, hora completa. 20 palabras nuevas del Oxford 3000</p></div></div>
+        <p class="pause-long">19:00 – 20:00 · descanso largo y cena</p>
+        <div class="blk b-output"><div class="blk-main"><p class="blk-head">20:00 – 20:50 · writing</p><p class="blk-body">Escribir 200 palabras, corregir con IA, reescribir la versión buena</p></div></div>
+        <p class="pause">10 min</p>
+        <div class="blk b-input"><div class="blk-main"><p class="blk-head">21:00 – 21:50 · reading</p><p class="blk-body">Leer libro fácil, capítulo nuevo, sin diccionario</p></div></div>
+        <p class="pause-long">22:00 – 23:00 · descanso largo</p>
+        <div class="blk b-input"><div class="blk-main"><p class="blk-head">23:00 – 23:50 · listening</p><p class="blk-body">Escuchar el audio de ese mismo capítulo, siguiendo el texto</p></div></div>
+        <p class="pause">10 min</p>
+        <div class="blk b-fluidez"><div class="blk-main"><p class="blk-head">00:00 – 00:50 · fluidez</p><p class="blk-body">Shadowing del mismo audio. Repetir encima, imitando ritmo</p></div></div>
+        <p class="close">1:00 dormir</p>
+      </section>
+
+      <section class="day">
+        <h2>Viernes</h2>
+        <p class="meta">Compromiso 19:00 · 1 h 40</p>
+        <div class="blk b-output"><div class="blk-main"><p class="blk-head">17:00 – 17:50 · speaking</p><p class="blk-body">Sesión con Bibi</p></div></div>
+        <p class="pause">10 min</p>
+        <div class="blk b-lengua"><div class="blk-main"><p class="blk-head">18:00 – 18:50 · vocabulario</p><p class="blk-body">Anki, hora completa</p></div></div>
+        <div class="blk b-off"><div class="blk-main"><p class="blk-head">19:00</p><p class="blk-body">Sales al compromiso</p></div></div>
+        <p class="close">Día de mantenimiento. Anki no se salta nunca.</p>
+      </section>
+
+      <section class="day">
+        <h2>Sábado y domingo</h2>
+        <p class="meta">8 h 20 · 10 bloques · los dos días iguales</p>
+        <div class="blk b-input"><div class="blk-main"><p class="blk-head">8:00 – 8:50 · reading</p><p class="blk-body">Leer libro fácil, capítulo nuevo</p></div></div>
+        <p class="pause">10 min</p>
+        <div class="blk b-input"><div class="blk-main"><p class="blk-head">9:00 – 9:50 · listening</p><p class="blk-body">Escuchar ese audio con el texto delante</p></div></div>
+        <p class="pause-long">10:00 – 11:00 · descanso largo</p>
+        <div class="blk b-lengua"><div class="blk-main"><p class="blk-head">11:00 – 11:50 · vocabulario</p><p class="blk-body">Anki, hora completa</p></div></div>
+        <p class="pause">10 min</p>
+        <div class="blk b-lengua"><div class="blk-main"><p class="blk-head">12:00 – 12:50 · gramática</p><p class="blk-body">El tema de la semana, con ejercicios corregidos</p></div></div>
+        <p class="pause-long">13:00 – 14:00 · almuerzo</p>
+        <div class="blk b-output"><div class="blk-main"><p class="blk-head">14:00 – 14:50 · writing</p><p class="blk-body">Escribir 300 palabras, corregir, reescribir</p></div></div>
+        <p class="pause">10 min</p>
+        <div class="blk b-output"><div class="blk-main"><p class="blk-head">15:00 – 15:50 · writing</p><p class="blk-body">Sáb: post en X en inglés. Dom: reescribir los errores de la semana</p></div></div>
+        <p class="pause-long">16:00 – 17:00 · descanso largo</p>
+        <div class="blk b-fluidez"><div class="blk-main"><p class="blk-head">17:00 – 17:50 · reading</p><p class="blk-body">Releer todo lo de la semana, rápido y sin parar</p></div></div>
+        <p class="pause">10 min</p>
+        <div class="blk b-fluidez"><div class="blk-main"><p class="blk-head">18:00 – 18:50 · listening</p><p class="blk-body">Reescuchar los audios de la semana sin texto</p></div></div>
+        <p class="pause-long">19:00 – 20:00 · descanso largo y cena</p>
+        <div class="blk b-fluidez"><div class="blk-main"><p class="blk-head">20:00 – 20:50 · speaking</p><p class="blk-body">Hablar grabado: mismo tema en 4, 3 y 2 minutos</p></div></div>
+        <p class="pause">10 min</p>
+        <div class="blk b-fluidez"><div class="blk-main"><p class="blk-head">21:00 – 21:50 · fluidez</p><p class="blk-body">Shadowing de los audios de la semana. Bloque de holgura</p></div></div>
+        <p class="close">22:00 libre · 1:00 dormir</p>
+      </section>
+
+    </div>
+  </details>
+
+  <section class="panel rules" style="margin-top:22px">
+    <h2>Las reglas que sostienen esto</h2>
+    <ul>
+      <li><b>Nunca tres bloques seguidos.</b> Dos con 10 minutos entre medio, después una hora completa de descanso.</li>
+      <li><b>Anki es lo último que se sacrifica.</b> 20 palabras nuevas al día, viernes incluido. Si el repaso pasa de 60 minutos, nuevas en cero hasta que baje.</li>
+      <li><b>Los bloques encadenan sobre el mismo material.</b> Lees el capítulo, escuchas ese audio, haces shadowing de ese audio.</li>
+      <li><b>Más de cinco palabras desconocidas por página</b> significa que el libro está muy alto. Bajas de nivel sin culpa.</li>
+      <li><b>El bloque de medianoche es el más fácil a propósito.</b> Si te cuesta dormir dos noches seguidas, solo escuchas sin repetir.</li>
+      <li><b>Me quedo con Bibi hasta el 15 de noviembre.</b> Salgo solo si deja de mandar la lista de errores, deja de corregirme cuando me entiende, o cancela dos veces en un mes.</li>
+      <li><b>Si duermo menos de 7 horas tres días seguidos,</b> el último bloque de la noche se corta hasta recuperar.</li>
+      <li><b>El proyecto se retoma el primer fin de semana de enero de 2027,</b> haya o no trabajo remoto en USD.</li>
+    </ul>
+  </section>
+
+  <footer>Punto de partida: 29/100, A1 · 16 de septiembre de 2026. Tu progreso se guarda en este navegador.</footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- catálogo de bloques, en orden de prioridad ---------- */
+// prioridad 0 = intocable. A menor número, antes entra cuando el día se acorta.
+var SEMANA = [
+  {id:"bibi",  p:0, fijo:17*60, hilo:"output",  skill:"speaking",    txt:"Sesión con Bibi"},
+  {id:"anki",  p:1, hilo:"lengua",  skill:"vocabulario", txt:"Anki, hora completa. 20 palabras nuevas del Oxford 3000"},
+  {id:"write", p:2, hilo:"output",  skill:"writing",     txt:"Escribir 200 palabras, corregir con IA, reescribir la versión buena"},
+  {id:"listen",p:3, hilo:"input",   skill:"listening",   txt:"Escuchar el audio del capítulo, siguiendo el texto"},
+  {id:"read",  p:4, hilo:"input",   skill:"reading",     txt:"Leer libro fácil, capítulo nuevo, sin diccionario"},
+  {id:"shadow",p:5, hilo:"fluidez", skill:"fluidez",     txt:"Shadowing del mismo audio. Repetir encima, imitando ritmo"}
+];
+var VIERNES = [
+  {id:"bibi", p:0, fijo:17*60, hilo:"output", skill:"speaking",    txt:"Sesión con Bibi"},
+  {id:"anki", p:1, hilo:"lengua", skill:"vocabulario", txt:"Anki, hora completa"}
+];
+var FINDE = [
+  {id:"anki",   p:1, hilo:"lengua",  skill:"vocabulario", txt:"Anki, hora completa"},
+  {id:"write",  p:2, hilo:"output",  skill:"writing",     txt:"Escribir 300 palabras, corregir, reescribir"},
+  {id:"listen", p:3, hilo:"input",   skill:"listening",   txt:"Escuchar ese audio con el texto delante"},
+  {id:"read",   p:4, hilo:"input",   skill:"reading",     txt:"Leer libro fácil, capítulo nuevo"},
+  {id:"gram",   p:5, hilo:"lengua",  skill:"gramática",   txt:"Gramática de la semana, con ejercicios corregidos"},
+  {id:"write2", p:6, hilo:"output",  skill:"writing",     txt:"Segundo texto: post en X en inglés, o reescribir los errores de la semana"},
+  {id:"speak",  p:7, hilo:"fluidez", skill:"speaking",    txt:"Hablar grabado: mismo tema en 4, 3 y 2 minutos"},
+  {id:"reread", p:8, hilo:"fluidez", skill:"reading",     txt:"Releer todo lo de la semana, rápido y sin parar"},
+  {id:"relisten",p:9,hilo:"fluidez", skill:"listening",   txt:"Reescuchar los audios de la semana sin texto"},
+  {id:"shadow", p:10,hilo:"fluidez", skill:"fluidez",     txt:"Shadowing de los audios de la semana"}
+];
+
+var DIAS = ["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+var DUR = 50, PAUSA = 10, PAUSA_LARGA = 60;
+
+function pool(d){
+  if(d===0||d===6) return FINDE.slice();
+  if(d===5) return VIERNES.slice();
+  return SEMANA.slice();
+}
+function topePorDefecto(d){ return d===5 ? 19*60 : 25*60; }
+function dd(n){return n<10?"0"+n:""+n}
+function reloj(m){m=((m%1440)+1440)%1440;return Math.floor(m/60)+":"+dd(m%60)}
+function dur(m){var h=Math.floor(m/60);return h+":"+dd(m%60)}
+
+/* ---------- motor: arma el día desde una hora de inicio ---------- */
+function armar(dia, inicio, tope, hechos){
+  hechos = hechos || {};
+  var tareas = pool(dia).filter(function(t){return !hechos[t.id]}).sort(function(a,b){return a.p-b.p});
+  var fijas = tareas.filter(function(t){return t.fijo!==undefined && t.fijo+DUR<=tope && t.fijo>=inicio});
+  var libres = tareas.filter(function(t){return fijas.indexOf(t)===-1});
+
+  var plan = [], t = inicio, enPar = 0;
+
+  function hueco(desde){
+    // ¿choca con alguna fija si pongo un bloque aquí?
+    for(var i=0;i<fijas.length;i++){
+      var f = fijas[i];
+      if(desde < f.fijo+DUR && desde+DUR > f.fijo) return f.fijo+DUR+PAUSA;
+    }
+    return null;
+  }
+
+  while(libres.length || fijas.length){
+    // ¿toca una fija justo ahora?
+    if(fijas.length && t >= fijas[0].fijo - 5 && t <= fijas[0].fijo + 5){
+      var f = fijas.shift();
+      plan.push({ini:f.fijo, fin:f.fijo+DUR, b:f});
+      t = f.fijo + DUR; enPar++;
+      if(enPar>=2){ plan.push({pausa:PAUSA_LARGA, ini:t, fin:t+PAUSA_LARGA}); t+=PAUSA_LARGA; enPar=0; }
+      else { plan.push({pausa:PAUSA, ini:t, fin:t+PAUSA}); t+=PAUSA; }
+      continue;
+    }
+    // si la próxima fija empieza antes de que quepa otro bloque, espera
+    if(fijas.length && t + DUR > fijas[0].fijo){
+      plan.push({espera:true, ini:t, fin:fijas[0].fijo});
+      t = fijas[0].fijo; enPar = 0;
+      continue;
+    }
+    var salto = hueco(t);
+    if(salto){ t = salto; enPar = 0; continue; }
+    if(!libres.length) break;
+    if(t + DUR > tope) break;
+
+    var b = libres.shift();
+    plan.push({ini:t, fin:t+DUR, b:b});
+    t += DUR; enPar++;
+    if(enPar>=2){ plan.push({pausa:PAUSA_LARGA, ini:t, fin:t+PAUSA_LARGA}); t+=PAUSA_LARGA; enPar=0; }
+    else { plan.push({pausa:PAUSA, ini:t, fin:t+PAUSA}); t+=PAUSA; }
+  }
+  // limpia la pausa final
+  while(plan.length && (plan[plan.length-1].pausa || plan[plan.length-1].espera)) plan.pop();
+  return {plan:plan, fuera:libres};
+}
+
+/* ---------- persistencia ---------- */
+var KEY = "jr-ingles-v2";
+function leer(){
+  try{ return JSON.parse(localStorage.getItem(KEY)) || {hechos:{}, minutos:0, racha:0, ultAnki:null}; }
+  catch(e){ return {hechos:{}, minutos:0, racha:0, ultAnki:null}; }
+}
+function guardar(s){ try{ localStorage.setItem(KEY, JSON.stringify(s)); }catch(e){} }
+function claveHoy(){ var d=new Date(); return d.getFullYear()+"-"+dd(d.getMonth()+1)+"-"+dd(d.getDate()); }
+
+/* ---------- render ---------- */
+var estado = leer();
+var vistaActual = null;
+
+var ultimaVista = null;
+
+function pintarPlan(dia, inicio, tope, titulo){
+  ultimaVista = {dia:dia, inicio:inicio, tope:tope, titulo:titulo};
+  var hechosHoy = estado.hechos[claveHoy()] || {};
+  var r = armar(dia, inicio, tope, hechosHoy);
+  vistaActual = {dia:dia, plan:r.plan};
+  var cont = document.getElementById("hoyBlocks");
+  var html = "", total = 0;
+
+  var yaHechos = pool(dia).filter(function(b){return hechosHoy[b.id]});
+  if(yaHechos.length){
+    html += '<p class="pause-long" style="margin:0 0 9px">Ya hecho hoy · '+dur(yaHechos.length*DUR)+'</p>';
+    yaHechos.forEach(function(b){
+      html += '<div class="blk b-'+b.hilo+' done" data-id="'+b.id+'">'+
+        '<input type="checkbox" class="chk" checked aria-label="marcar como no hecho">'+
+        '<div class="blk-main"><p class="blk-head">'+b.skill+'</p>'+
+        '<p class="blk-body">'+b.txt+'</p></div></div>';
+    });
+    html += '<p class="pause-long" style="margin:15px 0 9px">Lo que queda</p>';
+  }
+
+  r.plan.forEach(function(it){
+    if(it.pausa){
+      var cls = it.pausa>=PAUSA_LARGA ? "pause-long" : "pause";
+      var txt = it.pausa>=PAUSA_LARGA
+        ? reloj(it.ini)+" – "+reloj(it.fin)+" · descanso largo"
+        : it.pausa+" min";
+      html += '<p class="'+cls+'">'+txt+'</p>';
+      return;
+    }
+    if(it.espera){
+      html += '<p class="pause-long">'+reloj(it.ini)+" – "+reloj(it.fin)+' · libre hasta la sesión</p>';
+      return;
+    }
+    total += DUR;
+    html += '<div class="blk b-'+it.b.hilo+'" data-id="'+it.b.id+'">'+
+      '<input type="checkbox" class="chk" aria-label="marcar como hecho">'+
+      '<div class="blk-main">'+
+        '<p class="blk-head">'+reloj(it.ini)+" – "+reloj(it.fin)+" · "+it.b.skill+'</p>'+
+        '<p class="blk-body">'+it.b.txt+'</p>'+
+      '</div></div>';
+  });
+
+  if(r.fuera.length){
+    html += '<p class="pause-long" style="margin-top:12px">No entró hoy: '+
+      r.fuera.map(function(b){return b.skill}).join(", ")+'. Mañana vuelve completo.</p>';
+  }
+
+  var hechoMin = yaHechos.length*DUR;
+  if(!r.plan.length){
+    html += yaHechos.length && !r.fuera.length
+      ? '<p class="hint">Día completo. Nada pendiente.</p>'
+      : '<p class="hint">No queda tiempo para ningún bloque completo. Haz solo Anki, aunque sean 20 minutos.</p>';
+  }
+  cont.innerHTML = html;
+  document.getElementById("hoyTit").textContent = titulo;
+  document.getElementById("hoySub").textContent =
+    DIAS[dia].charAt(0).toUpperCase()+DIAS[dia].slice(1)+
+    (hechoMin ? " · "+dur(hechoMin)+" hechas" : "")+
+    " · quedan "+dur(total)+" desde "+reloj(inicio)+" hasta "+reloj(tope);
+
+  cont.querySelectorAll(".chk").forEach(function(c){
+    c.addEventListener("change", function(){
+      var id = c.closest(".blk").getAttribute("data-id");
+      var k = claveHoy();
+      estado.hechos[k] = estado.hechos[k] || {};
+      if(c.checked){
+        estado.hechos[k][id] = true;
+        estado.minutos += DUR;
+        if(id==="anki" && estado.ultAnki !== k){
+          estado.racha = (estado.racha||0) + 1;
+          estado.ultAnki = k;
+        }
+      }else{
+        delete estado.hechos[k][id];
+        estado.minutos = Math.max(0, estado.minutos - DUR);
+        if(id==="anki" && estado.ultAnki === k){
+          estado.racha = Math.max(0, (estado.racha||0) - 1);
+          estado.ultAnki = null;
+        }
+      }
+      guardar(estado);
+      var v = ultimaVista;
+      pintarPlan(v.dia, v.inicio, v.tope, v.titulo);
+      pintarAhora();
+    });
+  });
+  pintarStats();
+}
+
+function pintarStats(){
+  var hechosHoy = estado.hechos[claveHoy()] || {};
+  var minHoy = Object.keys(hechosHoy).length * DUR;
+  document.getElementById("stHoy").textContent = dur(minHoy);
+  document.getElementById("stRacha").textContent = estado.racha || 0;
+  var horas = Math.floor(estado.minutos/60);
+  document.getElementById("stTotal").textContent = horas;
+  var pct = Math.min(100, (horas/400)*100);
+  document.getElementById("progBar").style.width = pct.toFixed(1)+"%";
+  document.getElementById("progTxt").textContent = horas+" de 400 horas hacia B2";
+}
+
+function ahoraMin(){ var d=new Date(); return d.getHours()*60+d.getMinutes(); }
+
+function pintarAhora(){
+  if(!vistaActual){ return; }
+  var m = ahoraMin();
+  if(m < 120) m += 1440; // madrugada pertenece al día anterior
+  var act=null, sig=null;
+  for(var i=0;i<vistaActual.plan.length;i++){
+    var it = vistaActual.plan[i];
+    if(it.pausa||it.espera) continue;
+    if(m>=it.ini && m<it.fin){ act=it; break; }
+    if(m<it.ini){ sig=it; break; }
+  }
+  var t=document.getElementById("nowText"), h=document.getElementById("nowTime");
+  if(act){ t.textContent=act.b.txt; h.textContent="quedan "+(act.fin-m)+" min · hasta "+reloj(act.fin); }
+  else if(sig){ t.textContent="Libre. Sigue: "+sig.b.txt; h.textContent="arranca "+reloj(sig.ini); }
+  else { t.textContent="Día cerrado. A dormir."; h.textContent="mañana 8:00"; }
+}
+
+/* ---------- arranque ---------- */
+function diaSeleccionado(){
+  var v = document.getElementById("inDia").value;
+  return v==="auto" ? new Date().getDay() : parseInt(v,10);
+}
+function normal(){
+  var d = diaSeleccionado();
+  var ini = (d===0||d===6) ? 8*60 : 17*60;
+  document.getElementById("inTope").value = String(topePorDefecto(d));
+  pintarPlan(d, ini, topePorDefecto(d), "Plan normal");
+  pintarAhora();
+}
+document.getElementById("btnRe").addEventListener("click", function(){
+  var v = document.getElementById("inHora").value;
+  if(!v){ document.getElementById("inHora").focus(); return; }
+  var p = v.split(":");
+  var ini = parseInt(p[0],10)*60 + parseInt(p[1],10);
+  if(ini < 120) ini += 1440;
+  var d = diaSeleccionado();
+  var tope = parseInt(document.getElementById("inTope").value,10);
+  if(tope <= ini) tope = ini + 60;
+  pintarPlan(d, ini, tope, "Día reordenado");
+  pintarAhora();
+});
+document.getElementById("btnNormal").addEventListener("click", normal);
+document.getElementById("inDia").addEventListener("change", normal);
+
+(function countdown(){
+  var meta = new Date(2026,10,15), hoy = new Date();
+  var dias = Math.ceil((meta-hoy)/86400000);
+  if(dias>0) document.getElementById("countdown").textContent = dias+" días";
+})();
+
+(function preset(){
+  var m = ahoraMin();
+  document.getElementById("inHora").value = dd(Math.floor(m/60))+":"+dd(m%60);
+})();
+
+normal();
+setInterval(pintarAhora, 30000);
+})();
+</script>
+</body>
+</html>
