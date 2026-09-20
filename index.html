@@ -103,6 +103,15 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .chk{width:21px;height:21px;flex-shrink:0;margin-top:2px;accent-color:currentColor;cursor:pointer}
 .done .blk-body,.done .blk-head{opacity:.45;text-decoration:line-through}
 
+.sep{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);
+  margin:20px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.sep:first-child{margin-top:0}
+.note{font-size:12.5px;color:var(--ink-2);background:var(--bg);border:1px dashed var(--line);
+  border-radius:8px;padding:9px 12px;margin:12px 0 0;line-height:1.45}
+.note b{color:var(--ink);font-weight:600}
+label.chkfld{flex-direction:row;align-items:center;gap:8px;font-size:12.5px;
+  color:var(--ink-2);align-self:flex-end;min-height:42px;cursor:pointer}
+label.chkfld input{width:19px;height:19px;accent-color:var(--ink);cursor:pointer}
 .pause{font-size:11.5px;color:var(--ink-3);margin:0 0 6px;padding-left:13px}
 .pause-long{font-size:11.5px;color:var(--ink-2);font-weight:500;margin:6px 0 11px;
   padding:6px 12px;background:var(--bg);border-radius:7px}
@@ -157,7 +166,7 @@ footer{margin-top:26px;font-size:13px;color:var(--ink-3)}
 
   <section class="panel">
     <h2>Arranqué tarde</h2>
-    <p class="hint">Pon la hora en la que empiezas de verdad y te reordeno el día completo: mete primero lo que más pesa para tu B2 y respeta tus pares de bloques con descanso. Lo que no entre, cae por el final.</p>
+    <p class="hint">Pon la hora en la que retomas de verdad y te reordeno lo que queda: entra primero lo que más pesa para tu B2 y siempre arrancas con un par nuevo de 50 + 10 + 50, porque si volviste después de horas ya descansaste. Lo ya marcado sale del reparto y lo que no entre cae por el final.</p>
     <div class="ctrl">
       <label class="fld">Empiezo a las
         <input type="time" id="inHora">
@@ -181,6 +190,9 @@ footer{margin-top:26px;font-size:13px;color:var(--ink-3)}
           <option value="1380">23:00</option>
           <option value="1320">22:00</option>
         </select>
+      </label>
+      <label class="fld chkfld" title="Recorta el descanso largo a 30 min solo cuando con eso entra un bloque más">
+        <input type="checkbox" id="inExprime" checked> Exprimir el cierre
       </label>
       <button id="btnRe">Reordenar el día</button>
       <button class="ghost" id="btnNormal">Volver al plan normal</button>
@@ -270,6 +282,8 @@ footer{margin-top:26px;font-size:13px;color:var(--ink-3)}
     <h2>Las reglas que sostienen esto</h2>
     <ul>
       <li><b>Nunca tres bloques seguidos.</b> Dos con 10 minutos entre medio, después una hora completa de descanso.</li>
+      <li><b>Al retomar, el par arranca de cero.</b> Si volviste después de horas ya descansaste: el reordenador te mete dos bloques de 50 con 10 minutos entre medio y recién ahí el descanso largo. Nunca te manda a descansar después de un solo bloque.</li>
+      <li><b>La clase con Bibi no se reubica.</b> Tiene hora fija: si se te pasó, el tablero te lo dice y reparte el resto del día alrededor de lo que queda.</li>
       <li><b>Anki es lo último que se sacrifica.</b> 20 palabras nuevas al día, viernes incluido. Si el repaso pasa de 60 minutos, nuevas en cero hasta que baje.</li>
       <li><b>Los bloques encadenan sobre el mismo material.</b> Lees el capítulo, escuchas ese audio, haces shadowing de ese audio.</li>
       <li><b>Más de cinco palabras desconocidas por página</b> significa que el libro está muy alto. Bajas de nivel sin culpa.</li>
@@ -315,7 +329,7 @@ var FINDE = [
 ];
 
 var DIAS = ["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
-var DUR = 50, PAUSA = 10, PAUSA_LARGA = 60;
+var DUR = 50, PAUSA = 10, PAUSA_LARGA = 60, PAUSA_MIN = 30;
 
 function pool(d){
   if(d===0||d===6) return FINDE.slice();
@@ -328,53 +342,100 @@ function reloj(m){m=((m%1440)+1440)%1440;return Math.floor(m/60)+":"+dd(m%60)}
 function dur(m){var h=Math.floor(m/60);return h+":"+dd(m%60)}
 
 /* ---------- motor: arma el día desde una hora de inicio ---------- */
-function armar(dia, inicio, tope, hechos){
+// Reglas duras, en este orden:
+// 1. Nunca tres bloques seguidos: par de 50 + 10 + 50, y recién ahí el descanso largo.
+// 2. Al retomar se arranca SIEMPRE con un par nuevo. Lo ya hecho antes del corte no
+//    cuenta para el par: si volviste después de horas, ya descansaste.
+// 3. No se abre un descanso que no lleve a otro bloque: si no cabe, el día cierra ahí.
+// 4. Después del descanso largo los bloques vuelven a la hora en punto.
+function snapHora(m){ return m % 30 === 0 ? m : m + (30 - m % 30); }
+
+function armar(dia, inicio, tope, hechos, comprimir){
   hechos = hechos || {};
-  var tareas = pool(dia).filter(function(t){return !hechos[t.id]}).sort(function(a,b){return a.p-b.p});
-  var fijas = tareas.filter(function(t){return t.fijo!==undefined && t.fijo+DUR<=tope && t.fijo>=inicio});
-  var libres = tareas.filter(function(t){return fijas.indexOf(t)===-1});
+  var pend = pool(dia).filter(function(t){return !hechos[t.id]}).sort(function(a,b){return a.p-b.p});
+
+  // una fija (Bibi) solo sigue viva si su hora no pasó y entra completa antes del tope
+  var fijas = [], perdidas = [], libres = [];
+  pend.forEach(function(t){
+    if(t.fijo === undefined){ libres.push(t); return; }
+    if(t.fijo + DUR <= tope && t.fijo >= inicio - 5) fijas.push(t);
+    else perdidas.push(t);
+  });
+  fijas.sort(function(a,b){return a.fijo-b.fijo});
 
   var plan = [], t = inicio, enPar = 0;
 
-  function hueco(desde){
-    // ¿choca con alguna fija si pongo un bloque aquí?
-    for(var i=0;i<fijas.length;i++){
-      var f = fijas[i];
-      if(desde < f.fijo+DUR && desde+DUR > f.fijo) return f.fijo+DUR+PAUSA;
-    }
-    return null;
-  }
+  function quedanTareas(){ return libres.length + fijas.length; }
 
-  while(libres.length || fijas.length){
-    // ¿toca una fija justo ahora?
-    if(fijas.length && t >= fijas[0].fijo - 5 && t <= fijas[0].fijo + 5){
-      var f = fijas.shift();
+  while(quedanTareas()){
+    var f = fijas[0];
+
+    // la fija manda: si ya es su hora, va
+    if(f && t >= f.fijo - 5 && t <= f.fijo + 5){
+      fijas.shift();
       plan.push({ini:f.fijo, fin:f.fijo+DUR, b:f});
       t = f.fijo + DUR; enPar++;
-      if(enPar>=2){ plan.push({pausa:PAUSA_LARGA, ini:t, fin:t+PAUSA_LARGA}); t+=PAUSA_LARGA; enPar=0; }
-      else { plan.push({pausa:PAUSA, ini:t, fin:t+PAUSA}); t+=PAUSA; }
+      if(!cierraPausa()) break;
       continue;
     }
-    // si la próxima fija empieza antes de que quepa otro bloque, espera
-    if(fijas.length && t + DUR > fijas[0].fijo){
-      plan.push({espera:true, ini:t, fin:fijas[0].fijo});
-      t = fijas[0].fijo; enPar = 0;
+    // si la fija está adelante y no cabe un bloque entero antes, esperas
+    if(f && t + DUR > f.fijo){
+      if(f.fijo - t >= 15){
+        plan.push({espera:true, ini:t, fin:f.fijo});
+        enPar = 0;            // la espera larga cuenta como descanso
+      }
+      t = Math.max(t, f.fijo);
       continue;
     }
-    var salto = hueco(t);
-    if(salto){ t = salto; enPar = 0; continue; }
     if(!libres.length) break;
     if(t + DUR > tope) break;
 
     var b = libres.shift();
     plan.push({ini:t, fin:t+DUR, b:b});
     t += DUR; enPar++;
-    if(enPar>=2){ plan.push({pausa:PAUSA_LARGA, ini:t, fin:t+PAUSA_LARGA}); t+=PAUSA_LARGA; enPar=0; }
-    else { plan.push({pausa:PAUSA, ini:t, fin:t+PAUSA}); t+=PAUSA; }
+    if(!cierraPausa()) break;
   }
-  // limpia la pausa final
+
+  // decide la pausa que sigue al bloque recién puesto.
+  // devuelve false cuando ya no cabe nada más y el día cierra.
+  function cierraPausa(){
+    if(!quedanTareas()) return false;
+    var f = fijas[0];
+    if(enPar < 2){
+      // si la clase se viene y ya no cabe un bloque antes, se espera hasta su hora
+      if(f && t + PAUSA + DUR > f.fijo){
+        if(f.fijo - t >= 15){ plan.push({espera:true, ini:t, fin:f.fijo}); enPar = 0; }
+        else if(f.fijo > t){ plan.push({pausa:f.fijo-t, ini:t, fin:f.fijo}); }
+        else { plan.push({pegado:true, ini:t, fin:t}); }
+        t = Math.max(t, f.fijo);
+        return true;
+      }
+      var corto = t + PAUSA;
+      if(corto + DUR > tope) return false;
+      plan.push({pausa:PAUSA, ini:t, fin:corto});
+      t = corto;
+      return true;
+    }
+    var largo = snapHora(t + PAUSA_LARGA);
+    if(f && largo > f.fijo) largo = f.fijo;   // el descanso no se come la clase
+    if(largo + DUR <= tope || (f && largo <= f.fijo)){
+      plan.push({pausa:PAUSA_LARGA, ini:t, fin:largo});
+      t = largo; enPar = 0;
+      return true;
+    }
+    if(comprimir){
+      var corto2 = snapHora(t + PAUSA_MIN);
+      if(corto2 + DUR <= tope){
+        plan.push({pausa:PAUSA_LARGA, recortada:true, ini:t, fin:corto2});
+        t = corto2; enPar = 0;
+        return true;
+      }
+    }
+    return false;
+  }
+
   while(plan.length && (plan[plan.length-1].pausa || plan[plan.length-1].espera)) plan.pop();
-  return {plan:plan, fuera:libres};
+  return {plan:plan, fuera:libres.concat(fijas), perdidas:perdidas};
 }
 
 /* ---------- persistencia ---------- */
@@ -392,40 +453,50 @@ var vistaActual = null;
 
 var ultimaVista = null;
 
+function exprime(){ var c=document.getElementById("inExprime"); return !c || c.checked; }
+
 function pintarPlan(dia, inicio, tope, titulo){
+  var comprimir = exprime();
   ultimaVista = {dia:dia, inicio:inicio, tope:tope, titulo:titulo};
   var hechosHoy = estado.hechos[claveHoy()] || {};
-  var r = armar(dia, inicio, tope, hechosHoy);
+  var r = armar(dia, inicio, tope, hechosHoy, comprimir);
   vistaActual = {dia:dia, plan:r.plan};
   var cont = document.getElementById("hoyBlocks");
-  var html = "", total = 0;
+  var html = "", total = 0, bloques = 0, recortes = 0;
 
   var yaHechos = pool(dia).filter(function(b){return hechosHoy[b.id]});
   if(yaHechos.length){
-    html += '<p class="pause-long" style="margin:0 0 9px">Ya hecho hoy · '+dur(yaHechos.length*DUR)+'</p>';
+    html += '<p class="sep">Ya hecho hoy · '+dur(yaHechos.length*DUR)+'</p>';
     yaHechos.forEach(function(b){
       html += '<div class="blk b-'+b.hilo+' done" data-id="'+b.id+'">'+
         '<input type="checkbox" class="chk" checked aria-label="marcar como no hecho">'+
         '<div class="blk-main"><p class="blk-head">'+b.skill+'</p>'+
         '<p class="blk-body">'+b.txt+'</p></div></div>';
     });
-    html += '<p class="pause-long" style="margin:15px 0 9px">Lo que queda</p>';
+    html += '<p class="sep">Lo que queda · desde '+reloj(inicio)+'</p>';
   }
 
   r.plan.forEach(function(it){
+    if(it.pegado){
+      html += '<p class="pause">sin descanso · entras directo a la sesión</p>';
+      return;
+    }
     if(it.pausa){
-      var cls = it.pausa>=PAUSA_LARGA ? "pause-long" : "pause";
-      var txt = it.pausa>=PAUSA_LARGA
-        ? reloj(it.ini)+" – "+reloj(it.fin)+" · descanso largo"
-        : it.pausa+" min";
-      html += '<p class="'+cls+'">'+txt+'</p>';
+      var min = it.fin - it.ini;
+      if(min >= PAUSA_MIN){
+        html += '<p class="pause-long">'+reloj(it.ini)+" – "+reloj(it.fin)+" · descanso largo, "+min+" min"+
+          (it.recortada ? " (recortado para que entre un bloque más)" : "")+'</p>';
+        if(it.recortada) recortes++;
+      }else{
+        html += '<p class="pause">'+min+' min</p>';
+      }
       return;
     }
     if(it.espera){
       html += '<p class="pause-long">'+reloj(it.ini)+" – "+reloj(it.fin)+' · libre hasta la sesión</p>';
       return;
     }
-    total += DUR;
+    total += DUR; bloques++;
     html += '<div class="blk b-'+it.b.hilo+'" data-id="'+it.b.id+'">'+
       '<input type="checkbox" class="chk" aria-label="marcar como hecho">'+
       '<div class="blk-main">'+
@@ -434,14 +505,20 @@ function pintarPlan(dia, inicio, tope, titulo){
       '</div></div>';
   });
 
+  if(r.perdidas.length){
+    html += '<p class="note"><b>Se te pasó:</b> '+
+      r.perdidas.map(function(b){return b.skill+" · "+b.txt}).join(", ")+
+      '. No la reubico porque tiene hora fija.</p>';
+  }
   if(r.fuera.length){
-    html += '<p class="pause-long" style="margin-top:12px">No entró hoy: '+
-      r.fuera.map(function(b){return b.skill}).join(", ")+'. Mañana vuelve completo.</p>';
+    html += '<p class="note"><b>No entró hoy:</b> '+
+      r.fuera.map(function(b){return b.skill}).join(", ")+
+      '. Es lo que menos te acerca a B2, por eso cae último. Mañana vuelve completo.</p>';
   }
 
   var hechoMin = yaHechos.length*DUR;
   if(!r.plan.length){
-    html += yaHechos.length && !r.fuera.length
+    html += yaHechos.length && !r.fuera.length && !r.perdidas.length
       ? '<p class="hint">Día completo. Nada pendiente.</p>'
       : '<p class="hint">No queda tiempo para ningún bloque completo. Haz solo Anki, aunque sean 20 minutos.</p>';
   }
@@ -450,7 +527,9 @@ function pintarPlan(dia, inicio, tope, titulo){
   document.getElementById("hoySub").textContent =
     DIAS[dia].charAt(0).toUpperCase()+DIAS[dia].slice(1)+
     (hechoMin ? " · "+dur(hechoMin)+" hechas" : "")+
-    " · quedan "+dur(total)+" desde "+reloj(inicio)+" hasta "+reloj(tope);
+    " · "+bloques+" bloque"+(bloques===1?"":"s")+" por delante, "+dur(total)+
+    " desde "+reloj(inicio)+" hasta "+reloj(tope)+
+    (recortes ? " · descanso recortado para ganar un bloque" : "");
 
   cont.querySelectorAll(".chk").forEach(function(c){
     c.addEventListener("change", function(){
@@ -538,6 +617,10 @@ document.getElementById("btnRe").addEventListener("click", function(){
 });
 document.getElementById("btnNormal").addEventListener("click", normal);
 document.getElementById("inDia").addEventListener("change", normal);
+document.getElementById("inExprime").addEventListener("change", function(){
+  var v = ultimaVista;
+  if(v){ pintarPlan(v.dia, v.inicio, v.tope, v.titulo); pintarAhora(); }
+});
 
 (function countdown(){
   var meta = new Date(2026,10,15), hoy = new Date();
