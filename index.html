@@ -304,28 +304,28 @@ footer{margin-top:26px;font-size:13px;color:var(--ink-3)}
 /* ---------- catálogo de bloques, en orden de prioridad ---------- */
 // prioridad 0 = intocable. A menor número, antes entra cuando el día se acorta.
 var SEMANA = [
-  {id:"bibi",  p:0, fijo:17*60, hilo:"output",  skill:"speaking",    txt:"Sesión con Bibi"},
-  {id:"anki",  p:1, hilo:"lengua",  skill:"vocabulario", txt:"Anki, hora completa. 20 palabras nuevas del Oxford 3000"},
-  {id:"write", p:2, hilo:"output",  skill:"writing",     txt:"Escribir 200 palabras, corregir con IA, reescribir la versión buena"},
-  {id:"listen",p:3, hilo:"input",   skill:"listening",   txt:"Escuchar el audio del capítulo, siguiendo el texto"},
-  {id:"read",  p:4, hilo:"input",   skill:"reading",     txt:"Leer libro fácil, capítulo nuevo, sin diccionario"},
-  {id:"shadow",p:5, hilo:"fluidez", skill:"fluidez",     txt:"Shadowing del mismo audio. Repetir encima, imitando ritmo"}
+  {id:"bibi",  nombre:"clase con Bibi", p:0, fijo:17*60, hilo:"output",  skill:"speaking",    txt:"Sesión con Bibi"},
+  {id:"anki",  nombre:"Anki", p:1, hilo:"lengua",  skill:"vocabulario", txt:"Anki, hora completa. 20 palabras nuevas del Oxford 3000"},
+  {id:"write", nombre:"writing · 200 palabras", p:2, hilo:"output",  skill:"writing",     txt:"Escribir 200 palabras, corregir con IA, reescribir la versión buena"},
+  {id:"listen",nombre:"listening · audio con texto", p:3, hilo:"input",   skill:"listening",   txt:"Escuchar el audio del capítulo, siguiendo el texto"},
+  {id:"read",  nombre:"reading · capítulo nuevo", p:4, hilo:"input",   skill:"reading",     txt:"Leer libro fácil, capítulo nuevo, sin diccionario"},
+  {id:"shadow",nombre:"shadowing del audio", p:5, hilo:"fluidez", skill:"fluidez",     txt:"Shadowing del mismo audio. Repetir encima, imitando ritmo"}
 ];
 var VIERNES = [
-  {id:"bibi", p:0, fijo:17*60, hilo:"output", skill:"speaking",    txt:"Sesión con Bibi"},
-  {id:"anki", p:1, hilo:"lengua", skill:"vocabulario", txt:"Anki, hora completa"}
+  {id:"bibi", nombre:"clase con Bibi", p:0, fijo:17*60, hilo:"output", skill:"speaking",    txt:"Sesión con Bibi"},
+  {id:"anki", nombre:"Anki", p:1, hilo:"lengua", skill:"vocabulario", txt:"Anki, hora completa"}
 ];
 var FINDE = [
-  {id:"anki",   p:1, hilo:"lengua",  skill:"vocabulario", txt:"Anki, hora completa"},
-  {id:"write",  p:2, hilo:"output",  skill:"writing",     txt:"Escribir 300 palabras, corregir, reescribir"},
-  {id:"listen", p:3, hilo:"input",   skill:"listening",   txt:"Escuchar ese audio con el texto delante"},
-  {id:"read",   p:4, hilo:"input",   skill:"reading",     txt:"Leer libro fácil, capítulo nuevo"},
-  {id:"gram",   p:5, hilo:"lengua",  skill:"gramática",   txt:"Gramática de la semana, con ejercicios corregidos"},
-  {id:"write2", p:6, hilo:"output",  skill:"writing",     txt:"Segundo texto: post en X en inglés, o reescribir los errores de la semana"},
-  {id:"speak",  p:7, hilo:"fluidez", skill:"speaking",    txt:"Hablar grabado: mismo tema en 4, 3 y 2 minutos"},
-  {id:"reread", p:8, hilo:"fluidez", skill:"reading",     txt:"Releer todo lo de la semana, rápido y sin parar"},
-  {id:"relisten",p:9,hilo:"fluidez", skill:"listening",   txt:"Reescuchar los audios de la semana sin texto"},
-  {id:"shadow", p:10,hilo:"fluidez", skill:"fluidez",     txt:"Shadowing de los audios de la semana"}
+  {id:"anki",   nombre:"Anki", p:1, hilo:"lengua",  skill:"vocabulario", txt:"Anki, hora completa"},
+  {id:"write",  nombre:"writing · 300 palabras", p:2, hilo:"output",  skill:"writing",     txt:"Escribir 300 palabras, corregir, reescribir"},
+  {id:"listen", nombre:"listening · audio con texto", p:3, hilo:"input",   skill:"listening",   txt:"Escuchar ese audio con el texto delante"},
+  {id:"read",   nombre:"reading · capítulo nuevo", p:4, hilo:"input",   skill:"reading",     txt:"Leer libro fácil, capítulo nuevo"},
+  {id:"gram",   nombre:"gramática de la semana", p:5, hilo:"lengua",  skill:"gramática",   txt:"Gramática de la semana, con ejercicios corregidos"},
+  {id:"write2", nombre:"writing · post en X o errores", p:6, hilo:"output",  skill:"writing",     txt:"Segundo texto: post en X en inglés, o reescribir los errores de la semana"},
+  {id:"speak",  nombre:"speaking grabado", p:7, hilo:"fluidez", skill:"speaking",    txt:"Hablar grabado: mismo tema en 4, 3 y 2 minutos"},
+  {id:"reread", nombre:"reading · releer la semana", p:8, hilo:"fluidez", skill:"reading",     txt:"Releer todo lo de la semana, rápido y sin parar"},
+  {id:"relisten",nombre:"listening · reescuchar sin texto", p:9,hilo:"fluidez", skill:"listening",   txt:"Reescuchar los audios de la semana sin texto"},
+  {id:"shadow", nombre:"shadowing de la semana", p:10,hilo:"fluidez", skill:"fluidez",     txt:"Shadowing de los audios de la semana"}
 ];
 
 var DIAS = ["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
@@ -507,13 +507,15 @@ function pintarPlan(dia, inicio, tope, titulo){
 
   if(r.perdidas.length){
     html += '<p class="note"><b>Se te pasó:</b> '+
-      r.perdidas.map(function(b){return b.skill+" · "+b.txt}).join(", ")+
+      r.perdidas.map(function(b){return b.nombre}).join(", ")+
       '. No la reubico porque tiene hora fija.</p>';
   }
   if(r.fuera.length){
-    html += '<p class="note"><b>No entró hoy:</b> '+
-      r.fuera.map(function(b){return b.skill}).join(", ")+
-      '. Es lo que menos te acerca a B2, por eso cae último. Mañana vuelve completo.</p>';
+    html += '<p class="note"><b>No alcanzó el tiempo para '+r.fuera.length+' bloque'+
+      (r.fuera.length===1?"":"s")+':</b> '+
+      r.fuera.map(function(b){return b.nombre}).join(", ")+
+      '. Desde '+reloj(inicio)+' hasta '+reloj(tope)+' solo entran '+bloques+
+      '. Son los de menor prioridad para tu B2, por eso caen últimos. Mañana vuelve completo.</p>';
   }
 
   var hechoMin = yaHechos.length*DUR;
