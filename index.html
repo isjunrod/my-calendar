@@ -76,7 +76,8 @@ button.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
 button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--input);outline-offset:2px}
 
 .prog{height:9px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:6px}
-.prog i{display:block;height:100%;background:var(--fluidez);border-radius:99px}
+.prog i{display:block;height:100%;background:var(--fluidez);border-radius:99px;
+  min-width:0;transition:width .25s ease}
 
 .legend{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0}
 .tag{font-size:13px;padding:5px 12px;border-radius:99px;font-weight:500}
@@ -161,7 +162,7 @@ footer{margin-top:26px;font-size:13px;color:var(--ink-3)}
     <div class="stat"><span>Dormido</span><b>1:00</b></div>
     <div class="stat"><span>Hoy llevas</span><b id="stHoy">0:00</b></div>
     <div class="stat"><span>Racha Anki</span><b id="stRacha">0</b></div>
-    <div class="stat"><span>Horas totales</span><b id="stTotal">0</b></div>
+    <div class="stat"><span>Horas totales</span><b id="stTotal">0:00</b></div>
   </div>
 
   <section class="panel">
@@ -207,9 +208,9 @@ footer{margin-top:26px;font-size:13px;color:var(--ink-3)}
 
   <section class="panel">
     <h2>Camino a B2</h2>
-    <p class="hint">Desde A1 hasta B2 son unas 400 horas de estudio real. Esta barra cuenta solo los bloques que marcaste como hechos, no los planeados.</p>
+    <p class="hint">Desde A1 hasta B2 son unas 400 horas de estudio real. Esta barra cuenta solo los bloques que marcaste como hechos, no los planeados. Cada bloque marcado suma sus 50 minutos al toque: no espera a que junten una hora entera.</p>
     <div class="prog"><i id="progBar" style="width:0%"></i></div>
-    <p class="hint" style="margin:8px 0 0" id="progTxt">0 de 400 horas</p>
+    <p class="hint" style="margin:8px 0 0" id="progTxt">0:00 de 400 horas hacia B2</p>
   </section>
 
   <div class="legend">
@@ -567,11 +568,13 @@ function pintarStats(){
   var minHoy = Object.keys(hechosHoy).length * DUR;
   document.getElementById("stHoy").textContent = dur(minHoy);
   document.getElementById("stRacha").textContent = estado.racha || 0;
-  var horas = Math.floor(estado.minutos/60);
-  document.getElementById("stTotal").textContent = horas;
-  var pct = Math.min(100, (horas/400)*100);
-  document.getElementById("progBar").style.width = pct.toFixed(1)+"%";
-  document.getElementById("progTxt").textContent = horas+" de 400 horas hacia B2";
+  // cuenta en minutos: un bloque de 50 ya mueve la barra, no hay que juntar una hora entera
+  var min = estado.minutos || 0;
+  var pct = Math.min(100, (min/(400*60))*100);
+  document.getElementById("stTotal").textContent = dur(min);
+  document.getElementById("progBar").style.width = (min ? Math.max(pct, 0.7) : 0).toFixed(2)+"%";
+  document.getElementById("progTxt").textContent =
+    dur(min)+" de 400 horas hacia B2 · "+pct.toFixed(1)+"% · faltan "+dur(Math.max(0, 400*60-min));
 }
 
 function ahoraMin(){ var d=new Date(); return d.getHours()*60+d.getMinutes(); }
