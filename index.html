@@ -550,8 +550,22 @@ function pintarPlan(dia, inicio, tope, titulo){
         }
       }
       guardar(estado);
+      // al marcar, el resto del día se replanifica desde AHORA, no desde la hora
+      // con la que reordenaste: esa ya pasó y volvía a poner bloques en el pasado.
       var v = ultimaVista;
-      pintarPlan(v.dia, v.inicio, v.tope, v.titulo);
+      var ini = v.inicio, tit = v.titulo;
+      if(esHoy(v.dia)){
+        var ahora = ahoraMin();
+        if(ahora < 120) ahora += 1440;
+        if(c.checked) ahora += PAUSA;        // acabas de cerrar un bloque: tus 10 min
+        ahora = Math.ceil(ahora/5)*5;
+        if(ahora > ini){
+          ini = Math.min(ahora, v.tope);
+          tit = "Día reordenado";
+          ponerHora(document.getElementById("inHora"), ini);
+        }
+      }
+      pintarPlan(v.dia, ini, v.tope, tit);
       pintarAhora();
     });
   });
@@ -604,6 +618,7 @@ function pintarAhora(){
 }
 
 /* ---------- arranque ---------- */
+function esHoy(dia){ return dia === new Date().getDay(); }
 function diaSeleccionado(){
   var v = document.getElementById("inDia").value;
   return v==="auto" ? new Date().getDay() : parseInt(v,10);
