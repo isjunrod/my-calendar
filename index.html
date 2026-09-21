@@ -185,12 +185,7 @@ footer{margin-top:26px;font-size:13px;color:var(--ink-3)}
         </select>
       </label>
       <label class="fld">Cierro a la
-        <select id="inTope">
-          <option value="1500">1:00 am</option>
-          <option value="1440">00:00</option>
-          <option value="1380">23:00</option>
-          <option value="1320">22:00</option>
-        </select>
+        <input type="time" id="inTope">
       </label>
       <label class="fld chkfld" title="Recorta el descanso largo a 30 min solo cuando con eso entra un bloque más">
         <input type="checkbox" id="inExprime" checked> Exprimir el cierre
@@ -579,6 +574,18 @@ function pintarStats(){
 
 function ahoraMin(){ var d=new Date(); return d.getHours()*60+d.getMinutes(); }
 
+// "HH:MM" -> minutos del día. Lo de madrugada pertenece a la noche anterior.
+function leerHora(el){
+  var v = el && el.value;
+  if(!v) return null;
+  var p = v.split(":");
+  var m = parseInt(p[0],10)*60 + parseInt(p[1],10);
+  if(isNaN(m)) return null;
+  if(m < 120) m += 1440;
+  return m;
+}
+function ponerHora(el, m){ m=((m%1440)+1440)%1440; el.value = dd(Math.floor(m/60))+":"+dd(m%60); }
+
 function pintarAhora(){
   if(!vistaActual){ return; }
   var m = ahoraMin();
@@ -604,19 +611,20 @@ function diaSeleccionado(){
 function normal(){
   var d = diaSeleccionado();
   var ini = (d===0||d===6) ? 8*60 : 17*60;
-  document.getElementById("inTope").value = String(topePorDefecto(d));
+  ponerHora(document.getElementById("inTope"), topePorDefecto(d));
   pintarPlan(d, ini, topePorDefecto(d), "Plan normal");
   pintarAhora();
 }
 document.getElementById("btnRe").addEventListener("click", function(){
-  var v = document.getElementById("inHora").value;
-  if(!v){ document.getElementById("inHora").focus(); return; }
-  var p = v.split(":");
-  var ini = parseInt(p[0],10)*60 + parseInt(p[1],10);
-  if(ini < 120) ini += 1440;
+  var elH = document.getElementById("inHora"), elT = document.getElementById("inTope");
+  var ini = leerHora(elH);
+  if(ini === null){ elH.focus(); return; }
   var d = diaSeleccionado();
-  var tope = parseInt(document.getElementById("inTope").value,10);
-  if(tope <= ini) tope = ini + 60;
+  var tope = leerHora(elT);
+  if(tope === null){ tope = topePorDefecto(d); ponerHora(elT, tope); }
+  // si escribes un cierre anterior al arranque, lo empujo al día siguiente
+  if(tope <= ini) tope += 1440;
+  if(tope - ini > 20*60){ tope = ini + 60; ponerHora(elT, tope); }
   pintarPlan(d, ini, tope, "Día reordenado");
   pintarAhora();
 });
@@ -634,8 +642,7 @@ document.getElementById("inExprime").addEventListener("change", function(){
 })();
 
 (function preset(){
-  var m = ahoraMin();
-  document.getElementById("inHora").value = dd(Math.floor(m/60))+":"+dd(m%60);
+  ponerHora(document.getElementById("inHora"), ahoraMin());
 })();
 
 normal();
