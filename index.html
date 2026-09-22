@@ -96,6 +96,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .blk-main{flex:1;min-width:0}
 .blk-head{font-size:11.5px;font-weight:600;font-variant-numeric:tabular-nums;margin:0 0 2px;opacity:.85}
 .blk-body{font-size:13.5px;margin:0;line-height:1.38}
+.blk-link{display:inline-block;margin-top:4px;font-size:12.5px;font-weight:600;color:inherit;text-decoration:underline;text-underline-offset:2px}
 .b-input{border-color:var(--input);background:var(--input-bg);color:var(--input)}
 .b-output{border-color:var(--output);background:var(--output-bg);color:var(--output)}
 .b-lengua{border-color:var(--lengua);background:var(--lengua-bg);color:var(--lengua)}
@@ -457,6 +458,14 @@ function pintarPlan(dia, inicio, tope, titulo){
   var hechosHoy = estado.hechos[claveHoy()] || {};
   var r = armar(dia, inicio, tope, hechosHoy, comprimir);
   vistaActual = {dia:dia, plan:r.plan};
+  // Material del cuaderno de sesiones con Bibi: los bloques de writing y shadowing practican los errores reales
+  var CUADERNO = "https://cuaderno-junior.vercel.app/";
+  function material(b){
+    if(/^write/.test(b.id)) return '<a class="blk-link" href="'+CUADERNO+'#practica" target="_blank" rel="noopener">Tema y estructuras de hoy →</a>';
+    if(/^shadow/.test(b.id)) return '<a class="blk-link" href="'+CUADERNO+'#practica" target="_blank" rel="noopener">Tus frases corregidas para shadowing →</a>';
+    if(/bibi/i.test(b.nombre || "")) return '<a class="blk-link" href="'+CUADERNO+'" target="_blank" rel="noopener">Cuaderno de sesiones →</a>';
+    return "";
+  }
   var cont = document.getElementById("hoyBlocks");
   var html = "", total = 0, bloques = 0, recortes = 0;
 
@@ -467,7 +476,7 @@ function pintarPlan(dia, inicio, tope, titulo){
       html += '<div class="blk b-'+b.hilo+' done" data-id="'+b.id+'">'+
         '<input type="checkbox" class="chk" checked aria-label="marcar como no hecho">'+
         '<div class="blk-main"><p class="blk-head">'+b.skill+'</p>'+
-        '<p class="blk-body">'+b.txt+'</p></div></div>';
+        '<p class="blk-body">'+b.txt+'</p>'+material(b)+'</div></div>';
     });
     html += '<p class="sep">Lo que queda · desde '+reloj(inicio)+'</p>';
   }
@@ -497,7 +506,7 @@ function pintarPlan(dia, inicio, tope, titulo){
       '<input type="checkbox" class="chk" aria-label="marcar como hecho">'+
       '<div class="blk-main">'+
         '<p class="blk-head">'+reloj(it.ini)+" – "+reloj(it.fin)+" · "+it.b.skill+'</p>'+
-        '<p class="blk-body">'+it.b.txt+'</p>'+
+        '<p class="blk-body">'+it.b.txt+'</p>'+material(it.b)+
       '</div></div>';
   });
 
