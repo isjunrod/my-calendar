@@ -2,6 +2,24 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
+<script>
+/* El plan ahora vive en el cuaderno (con historial en la base de datos). Este sitio pasa tu historial una vez y redirige. */
+(function(){
+  var C = "https://cuaderno-junior.vercel.app";
+  var data = null, moved = false;
+  try { data = localStorage.getItem("jr-ingles-v2"); moved = localStorage.getItem("jr-migrado") === "1"; } catch(e) {}
+  var hechos = null;
+  try { hechos = data ? JSON.parse(data).hechos : null; } catch(e) {}
+  if (hechos && Object.keys(hechos).length && !moved) {
+    try { localStorage.setItem("jr-migrado", "1"); } catch(e) {}
+    var b64 = btoa(unescape(encodeURIComponent(JSON.stringify({hechos: hechos}))));
+    location.replace(C + "/api/plan/import?d=" + encodeURIComponent(b64));
+  } else {
+    location.replace(C + "/plan");
+  }
+})();
+</script>
+
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Plan de inglés · B2 diciembre</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
