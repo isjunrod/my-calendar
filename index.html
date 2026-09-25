@@ -8,12 +8,14 @@
   var C = "https://cuaderno-junior.vercel.app";
   var data = null, moved = false;
   try { data = localStorage.getItem("jr-ingles-v2"); moved = localStorage.getItem("jr-migrado") === "1"; } catch(e) {}
-  var hechos = null;
-  try { hechos = data ? JSON.parse(data).hechos : null; } catch(e) {}
-  if (hechos && Object.keys(hechos).length && !moved) {
+  var st = null;
+  try { st = data ? JSON.parse(data) : null; } catch(e) {}
+  var hechos = st ? (st.hechos || {}) : null;
+  var force = /[?&]exportar=1/.test(location.search);
+  if (hechos && (force || !moved)) {
     try { localStorage.setItem("jr-migrado", "1"); } catch(e) {}
-    var b64 = btoa(unescape(encodeURIComponent(JSON.stringify({hechos: hechos}))));
-    location.replace(C + "/api/plan/import?d=" + encodeURIComponent(b64));
+    var b64 = btoa(unescape(encodeURIComponent(JSON.stringify({hechos: hechos, minutos: st.minutos || 0, racha: st.racha || 0, ultAnki: st.ultAnki || null}))));
+    location.replace(C + "/importar?d=" + encodeURIComponent(b64));
   } else {
     location.replace(C + "/plan");
   }
