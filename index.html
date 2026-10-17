@@ -86,6 +86,13 @@ h1{font-size:clamp(28px,5vw,44px);line-height:1.02;letter-spacing:-.025em;font-w
 .panel .hint{font-size:13.5px;color:var(--ink-2);margin:0 0 15px;max-width:62ch}
 
 .ctrl{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+.chips{margin-top:12px}
+button.chip{background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:10px 18px;min-height:44px}
+button.chip:hover{border-color:var(--ink-2)}
+button.chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+label.fld.inline{flex-direction:row;align-items:center;gap:8px;font-size:13.5px}
+.why{margin:4px 0 0;font-size:12.5px;color:var(--ink-2)}
+.from-day{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.02em;text-transform:uppercase;color:var(--ink-3);margin-left:6px}
 label.fld{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--ink-2)}
 input[type=time],select{
   font-family:inherit;font-size:15px;padding:9px 11px;border-radius:9px;
@@ -154,6 +161,10 @@ footer{margin-top:26px;font-size:13px;color:var(--ink-3)}
   .deadline{text-align:left}
   .now-time{margin-left:0;width:100%}
   .ctrl{flex-direction:column;align-items:stretch}
+  .ctrl.chips{flex-direction:row;flex-wrap:wrap}
+  .ctrl.chips button.chip{flex:1 0 28%}
+  .ctrl.chips label.fld.inline{width:100%;white-space:nowrap}
+  .ctrl.chips label.fld.inline input{flex:1}
   label.fld{width:100%}
   input[type=time],select,button{width:100%}
 }
@@ -179,39 +190,23 @@ footer{margin-top:26px;font-size:13px;color:var(--ink-3)}
   </div>
 
   <div class="stats">
-    <div class="stat"><span>Arriba</span><b>8:00</b></div>
-    <div class="stat"><span>Dormido</span><b>1:00</b></div>
+    <div class="stat"><span>Lun a vie</span><b>19–22</b></div>
+    <div class="stat"><span>Finde</span><b>a tu hora</b></div>
     <div class="stat"><span>Hoy llevas</span><b id="stHoy">0:00</b></div>
     <div class="stat"><span>Racha Anki</span><b id="stRacha">0</b></div>
     <div class="stat"><span>Horas totales</span><b id="stTotal">0:00</b></div>
   </div>
 
-  <section class="panel">
-    <h2>Arranqué tarde</h2>
-    <p class="hint">Pon la hora en la que retomas de verdad y te reordeno lo que queda: entra primero lo que más pesa para tu B2 y siempre arrancas con un par nuevo de 50 + 10 + 50, porque si volviste después de horas ya descansaste. Lo ya marcado sale del reparto y lo que no entre cae por el final.</p>
-    <div class="ctrl">
-      <label class="fld">Empiezo a las
-        <input type="time" id="inHora">
-      </label>
-      <label class="fld">Día
-        <select id="inDia">
-          <option value="auto">Hoy</option>
-          <option value="1">Lunes</option>
-          <option value="2">Martes</option>
-          <option value="3">Miércoles</option>
-          <option value="4">Jueves</option>
-          <option value="5">Viernes</option>
-          <option value="6">Sábado</option>
-          <option value="0">Domingo</option>
-        </select>
-      </label>
-      <label class="fld">Cierro a la
-        <input type="time" id="inTope">
-      </label>
+  <section class="panel" id="tiempoPanel">
+    <h2>¿Hasta qué hora estudias?</h2>
+    <p class="hint">Estudiando lo del <b id="diaEstudio">hoy</b>. Empiezas ahora y te armo lo que más te acerca a B2 hasta esa hora (bloques de 50 + 10; el fin de semana, con tus descansos largos). Si te sobra, entra lo más valioso que dejaste atrás. El día cambia a las 4 am, igual que en Anki.</p>
+    <div class="ctrl chips" id="chips">
+      <label class="fld inline">Termino a las <input type="time" id="inHasta"></label>
+    </div>
+    <div class="ctrl" style="margin-top:10px">
       <label class="fld chkfld" title="Recorta el descanso largo a 30 min solo cuando con eso entra un bloque más">
         <input type="checkbox" id="inExprime" checked> Exprimir el cierre
       </label>
-      <button id="btnRe">Reordenar el día</button>
       <button class="ghost" id="btnNormal">Volver al plan normal</button>
     </div>
   </section>
@@ -241,35 +236,19 @@ footer{margin-top:26px;font-size:13px;color:var(--ink-3)}
     <div class="days" style="margin-top:14px">
 
       <section class="day">
-        <h2>Lunes a jueves</h2>
-        <p class="meta">5 h · 6 bloques · los cuatro días iguales</p>
-        <div class="blk b-output"><div class="blk-main"><p class="blk-head">17:00 – 17:50 · speaking</p><p class="blk-body">Sesión con Bibi</p></div></div>
+        <h2>Lunes a viernes</h2>
+        <p class="meta">3 h · 3 bloques de 50 · desde el 17 oct</p>
+        <div class="blk b-output"><div class="blk-main"><p class="blk-head">19:00 – 19:50 · speaking</p><p class="blk-body">Sesión con IA, grabada (voz de ChatGPT o Claude)</p></div></div>
         <p class="pause">10 min</p>
-        <div class="blk b-lengua"><div class="blk-main"><p class="blk-head">18:00 – 18:50 · vocabulario</p><p class="blk-body">Anki, hora completa. 20 palabras nuevas del Oxford 3000</p></div></div>
-        <p class="pause-long">19:00 – 20:00 · descanso largo y cena</p>
-        <div class="blk b-output"><div class="blk-main"><p class="blk-head">20:00 – 20:50 · writing</p><p class="blk-body">Escribir 200 palabras, corregir con IA, reescribir la versión buena</p></div></div>
+        <div class="blk b-lengua"><div class="blk-main"><p class="blk-head">20:00 – 20:50 · vocabulario</p><p class="blk-body">Anki: todos los repasos, después nuevas</p></div></div>
         <p class="pause">10 min</p>
-        <div class="blk b-input"><div class="blk-main"><p class="blk-head">21:00 – 21:50 · reading</p><p class="blk-body">Leer libro fácil, capítulo nuevo, sin diccionario</p></div></div>
-        <p class="pause-long">22:00 – 23:00 · descanso largo</p>
-        <div class="blk b-input"><div class="blk-main"><p class="blk-head">23:00 – 23:50 · listening</p><p class="blk-body">Escuchar el audio de ese mismo capítulo, siguiendo el texto</p></div></div>
-        <p class="pause">10 min</p>
-        <div class="blk b-fluidez"><div class="blk-main"><p class="blk-head">00:00 – 00:50 · fluidez</p><p class="blk-body">Shadowing del mismo audio. Repetir encima, imitando ritmo</p></div></div>
-        <p class="close">1:00 dormir</p>
-      </section>
-
-      <section class="day">
-        <h2>Viernes</h2>
-        <p class="meta">Compromiso 19:00 · 1 h 40</p>
-        <div class="blk b-output"><div class="blk-main"><p class="blk-head">17:00 – 17:50 · speaking</p><p class="blk-body">Sesión con Bibi</p></div></div>
-        <p class="pause">10 min</p>
-        <div class="blk b-lengua"><div class="blk-main"><p class="blk-head">18:00 – 18:50 · vocabulario</p><p class="blk-body">Anki, hora completa</p></div></div>
-        <div class="blk b-off"><div class="blk-main"><p class="blk-head">19:00</p><p class="blk-body">Sales al compromiso</p></div></div>
-        <p class="close">Día de mantenimiento. Anki no se salta nunca.</p>
+        <div class="blk b-input"><div class="blk-main"><p class="blk-head">21:00 – 21:50 · listening, writing o reading</p><p class="blk-body">Lun y mié: listening. Mar y vie: writing. Jue: reading</p></div></div>
+        <p class="close">22:00 cierras el día. El descanso de 10 puede ir antes o después de cada bloque; el orden real lo decide el cuaderno con tus datos.</p>
       </section>
 
       <section class="day">
         <h2>Sábado y domingo</h2>
-        <p class="meta">8 h 20 · 10 bloques · los dos días iguales</p>
+        <p class="meta">Sin hora fija: arranca a la hora en que abres el plan · ejemplo desde las 8:00</p>
         <div class="blk b-input"><div class="blk-main"><p class="blk-head">8:00 – 8:50 · reading</p><p class="blk-body">Leer libro fácil, capítulo nuevo</p></div></div>
         <p class="pause">10 min</p>
         <div class="blk b-input"><div class="blk-main"><p class="blk-head">9:00 – 9:50 · listening</p><p class="blk-body">Escuchar ese audio con el texto delante</p></div></div>
@@ -280,13 +259,13 @@ footer{margin-top:26px;font-size:13px;color:var(--ink-3)}
         <p class="pause-long">13:00 – 14:00 · almuerzo</p>
         <div class="blk b-output"><div class="blk-main"><p class="blk-head">14:00 – 14:50 · writing</p><p class="blk-body">Escribir 300 palabras, corregir, reescribir</p></div></div>
         <p class="pause">10 min</p>
-        <div class="blk b-output"><div class="blk-main"><p class="blk-head">15:00 – 15:50 · writing</p><p class="blk-body">Sáb: post en X en inglés. Dom: reescribir los errores de la semana</p></div></div>
+        <div class="blk b-output"><div class="blk-main"><p class="blk-head">15:00 – 15:50 · writing</p><p class="blk-body">Sáb: writing tipo examen, cronometrado. Dom: reescribir los errores de la semana</p></div></div>
         <p class="pause-long">16:00 – 17:00 · descanso largo</p>
         <div class="blk b-fluidez"><div class="blk-main"><p class="blk-head">17:00 – 17:50 · reading</p><p class="blk-body">Releer todo lo de la semana, rápido y sin parar</p></div></div>
         <p class="pause">10 min</p>
         <div class="blk b-fluidez"><div class="blk-main"><p class="blk-head">18:00 – 18:50 · listening</p><p class="blk-body">Reescuchar los audios de la semana sin texto</p></div></div>
         <p class="pause-long">19:00 – 20:00 · descanso largo y cena</p>
-        <div class="blk b-fluidez"><div class="blk-main"><p class="blk-head">20:00 – 20:50 · speaking</p><p class="blk-body">Hablar grabado: mismo tema en 4, 3 y 2 minutos</p></div></div>
+        <div class="blk b-fluidez"><div class="blk-main"><p class="blk-head">20:00 – 20:50 · speaking</p><p class="blk-body">Speaking con IA, grabado: mismo tema en 4, 3 y 2 minutos</p></div></div>
         <p class="pause">10 min</p>
         <div class="blk b-fluidez"><div class="blk-main"><p class="blk-head">21:00 – 21:50 · fluidez</p><p class="blk-body">Shadowing de los audios de la semana. Bloque de holgura</p></div></div>
         <p class="close">22:00 libre · 1:00 dormir</p>
@@ -298,20 +277,21 @@ footer{margin-top:26px;font-size:13px;color:var(--ink-3)}
   <section class="panel rules" style="margin-top:22px">
     <h2>Las reglas que sostienen esto</h2>
     <ul>
-      <li><b>Nunca tres bloques seguidos.</b> Dos con 10 minutos entre medio, después una hora completa de descanso.</li>
-      <li><b>Al retomar, el par arranca de cero.</b> Si volviste después de horas ya descansaste: el reordenador te mete dos bloques de 50 con 10 minutos entre medio y recién ahí el descanso largo. Nunca te manda a descansar después de un solo bloque.</li>
-      <li><b>La clase con Bibi no se reubica.</b> Tiene hora fija: si se te pasó, el tablero te lo dice y reparte el resto del día alrededor de lo que queda.</li>
+      <li><b>Entre semana (desde el 17 oct).</b> De 19:00 a 22:00: 3 bloques de 50 con 10 de descanso cada uno, sin descanso largo. A las 22:00 se cierra el día.</li>
+      <li><b>Fin de semana sin hora fija.</b> El plan arranca a la hora en que lo abres (hora de Perú).</li>
+      <li><b>Fin de semana: nunca tres bloques seguidos.</b> Dos con 10 minutos entre medio, después una hora completa de descanso.</li>
+      <li><b>Fin de semana, al retomar, el par arranca de cero.</b> Si volviste después de horas ya descansaste: el reordenador te mete dos bloques de 50 con 10 minutos entre medio y recién ahí el descanso largo. Nunca te manda a descansar después de un solo bloque.</li>
+      <li><b>La sesión con IA se graba siempre.</b> Pantalla con el audio de los dos: así el cuaderno saca tus errores y tus tarjetas igual que antes. Antes de empezar, pega el prompt de hoy (en Hoy).</li>
       <li><b>Anki es lo último que se sacrifica.</b> 20 palabras nuevas al día, viernes incluido. Si el repaso pasa de 60 minutos, nuevas en cero hasta que baje.</li>
       <li><b>Los bloques encadenan sobre el mismo material.</b> Lees el capítulo, escuchas ese audio, haces shadowing de ese audio.</li>
       <li><b>Más de cinco palabras desconocidas por página</b> significa que el libro está muy alto. Bajas de nivel sin culpa.</li>
-      <li><b>El bloque de medianoche es el más fácil a propósito.</b> Si te cuesta dormir dos noches seguidas, solo escuchas sin repetir.</li>
-      <li><b>Me quedo con Bibi hasta el 15 de noviembre.</b> Salgo solo si deja de mandar la lista de errores, deja de corregirme cuando me entiende, o cancela dos veces en un mes.</li>
+      <li><b>Si con la IA no me siento cómodo,</b> busco otro tutor en Preply. La IA no reemplaza del todo a un humano: por eso cada sesión lleva el prompt con mis errores reales.</li>
       <li><b>Si duermo menos de 7 horas tres días seguidos,</b> el último bloque de la noche se corta hasta recuperar.</li>
       <li><b>El proyecto se retoma el primer fin de semana de enero de 2027,</b> haya o no trabajo remoto en USD.</li>
     </ul>
   </section>
 
-  <footer>Punto de partida: 29/100, A1 · 16 de septiembre de 2026. Tu progreso se guarda en este navegador.</footer>
+  <footer>Punto de partida: 29/100, A1 · 16 de septiembre de 2026. Clases con Bibi del 21 sep al 14 oct; desde el 17 oct, sesiones con IA. Tu progreso se guarda en este navegador.</footer>
 </div>
 
 <script>
@@ -322,7 +302,7 @@ footer{margin-top:26px;font-size:13px;color:var(--ink-3)}
 // prioridad 0 = intocable. A menor número, antes entra cuando el día se acorta.
 var SEMANA = [
   {id:"bibi",  nombre:"clase con Bibi", p:0, fijo:17*60, hilo:"output",  skill:"speaking",    txt:"Sesión con Bibi"},
-  {id:"anki",  nombre:"Anki", p:1, hilo:"lengua",  skill:"vocabulario", txt:"Anki, hora completa. 20 palabras nuevas del Oxford 3000"},
+  {id:"anki",  nombre:"Anki", p:1, hilo:"lengua",  skill:"vocabulario", txt:"Anki, hora completa: los repasos del día y, si hay, nuevas (primero las de tus sesiones)"},
   {id:"write", nombre:"writing · 200 palabras", p:2, hilo:"output",  skill:"writing",     txt:"Escribir 200 palabras, corregir con IA, reescribir la versión buena"},
   {id:"listen",nombre:"listening · audio con texto", p:3, hilo:"input",   skill:"listening",   txt:"Escuchar el audio del capítulo, siguiendo el texto"},
   {id:"read",  nombre:"reading · capítulo nuevo", p:4, hilo:"input",   skill:"reading",     txt:"Leer libro fácil, capítulo nuevo, sin diccionario"},
@@ -330,30 +310,58 @@ var SEMANA = [
 ];
 var VIERNES = [
   {id:"bibi", nombre:"clase con Bibi", p:0, fijo:17*60, hilo:"output", skill:"speaking",    txt:"Sesión con Bibi"},
-  {id:"anki", nombre:"Anki", p:1, hilo:"lengua", skill:"vocabulario", txt:"Anki, hora completa"}
+  {id:"anki", nombre:"Anki", p:1, hilo:"lengua", skill:"vocabulario", txt:"Anki, hora completa: los repasos del día y, si hay, nuevas (primero las de tus sesiones)"}
 ];
 var FINDE = [
-  {id:"anki",   nombre:"Anki", p:1, hilo:"lengua",  skill:"vocabulario", txt:"Anki, hora completa"},
+  {id:"anki",   nombre:"Anki", p:1, hilo:"lengua",  skill:"vocabulario", txt:"Anki, hora completa: los repasos del día y, si hay, nuevas (primero las de tus sesiones)"},
   {id:"write",  nombre:"writing · 300 palabras", p:2, hilo:"output",  skill:"writing",     txt:"Escribir 300 palabras, corregir, reescribir"},
   {id:"listen", nombre:"listening · audio con texto", p:3, hilo:"input",   skill:"listening",   txt:"Escuchar ese audio con el texto delante"},
   {id:"read",   nombre:"reading · capítulo nuevo", p:4, hilo:"input",   skill:"reading",     txt:"Leer libro fácil, capítulo nuevo"},
   {id:"gram",   nombre:"gramática de la semana", p:5, hilo:"lengua",  skill:"gramática",   txt:"Gramática de la semana, con ejercicios corregidos"},
-  {id:"write2", nombre:"writing · post en X o errores", p:6, hilo:"output",  skill:"writing",     txt:"Segundo texto: post en X en inglés, o reescribir los errores de la semana"},
+  {id:"write2", nombre:"writing · examen o errores", p:6, hilo:"output",  skill:"writing",     txt:"Sábado: writing tipo examen, 20 min cronometrados y sin ayuda, después lo corriges. Domingo: reescribe bien los errores de la semana de tus sesiones (están en Errores)"},
   {id:"speak",  nombre:"speaking grabado", p:7, hilo:"fluidez", skill:"speaking",    txt:"Hablar grabado: mismo tema en 4, 3 y 2 minutos"},
   {id:"reread", nombre:"reading · releer la semana", p:8, hilo:"fluidez", skill:"reading",     txt:"Releer todo lo de la semana, rápido y sin parar"},
   {id:"relisten",nombre:"listening · reescuchar sin texto", p:9,hilo:"fluidez", skill:"listening",   txt:"Reescuchar los audios de la semana sin texto"},
   {id:"shadow", nombre:"shadowing de la semana", p:10,hilo:"fluidez", skill:"fluidez",     txt:"Shadowing de los audios de la semana"}
 ];
 
+// Horario desde el 06-10 (lunes a viernes): Bibi 17:00–18:00 y de 19:00 a 22:00 tres bloques de 50 con 10 de
+// descanso cada uno (puede ir antes o después del bloque). Anki y listening todos los días; el tercero rota:
+// writing lunes, miércoles y viernes; reading martes y jueves. Los días anteriores conservan su plan.
+var HORARIO_DESDE = "2026-10-06";
+var B_BIBI2 = {id:"bibi", nombre:"clase con Bibi", p:0, fijo:17*60, min:60, hilo:"output", skill:"speaking", txt:"Clase con Bibi, 17:00–18:00"};
+var B_ANKI2 = {id:"anki", nombre:"Anki", p:1, hilo:"lengua", skill:"vocabulario", txt:"Anki: primero TODOS los repasos del día (hasta dejarlo en 0), después las nuevas; salen primero las de tus sesiones (etiquetas bibi e ia)"};
+var B_LISTEN2 = {id:"listen", nombre:"listening · audio con texto", p:2, hilo:"input", skill:"listening", txt:"Listening A2 con transcripción: 1) escuchas una vez sin texto, 2) por frases con el texto, parando y repitiendo, 3) otra vez sin texto. Si en 5 min entiendes menos de la mitad, baja de nivel"};
+var B_WRITE2 = {id:"write", nombre:"writing · 150 a 200 palabras", p:3, hilo:"output", skill:"writing", txt:"Writing: 25 min escribes sin ayuda sobre el tema del día usando tus 3 errores frecuentes; 10 min la IA te marca cada error (sin reescribirte); 15 min reescribes tú la versión correcta"};
+var B_READ2 = {id:"read", nombre:"reading · noticia o cuento", p:3, hilo:"input", skill:"reading", txt:"Reading A2: una noticia de Breaking News English nivel 1-2 o un cuento de VOA American Stories. Primera lectura sin diccionario; al final 5 frases nuevas a Anki"};
+function semana2(d){ return [B_BIBI2, B_ANKI2, B_LISTEN2, (d === 2 || d === 4) ? B_READ2 : B_WRITE2]; }
+// Desde el 17-10 ya no hay clases con Bibi: lunes a viernes de 19:00 a 22:00 de corrido, 3 bloques de 50 + 10.
+// La sesión con IA (speaking grabado) y Anki van todos los días; el tercero rota según tus skills más bajas del
+// EF SET (writing 26, listening 28, reading 30): listening lun y mié, writing mar y vie, reading jue.
+var IA_DESDE = "2026-10-17";
+var B_IA = {id:"ia", nombre:"sesión con IA", p:1, hilo:"output", skill:"speaking", txt:"Sesión con IA (ChatGPT o Claude, modo voz), grabando pantalla con audio: pega primero el prompt de hoy. Habla tú el 70 %; la IA te deja corregirte solo y después te da la forma correcta"};
+function semana3(d){ return [B_IA, B_ANKI2, d === 1 || d === 3 ? B_LISTEN2 : d === 4 ? B_READ2 : B_WRITE2]; }
 var DIAS = ["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
 var DUR = 50, PAUSA = 10, PAUSA_LARGA = 60, PAUSA_MIN = 30;
 
-function pool(d){
+function nuevoHorario(d, fecha){ return d >= 1 && d <= 5 && (fecha || hoyLogico()) >= HORARIO_DESDE; }
+function horarioIA(d, fecha){ return d >= 1 && d <= 5 && (fecha || hoyLogico()) >= IA_DESDE; }
+function pool(d, fecha){
+  if(horarioIA(d, fecha)) return semana3(d);
+  if(nuevoHorario(d, fecha)) return semana2(d);
   if(d===0||d===6) return FINDE.slice();
   if(d===5) return VIERNES.slice();
   return SEMANA.slice();
 }
-function topePorDefecto(d){ return d===5 ? 19*60 : 25*60; }
+// reglas del día: entre semana (horario nuevo) los bloques van de corrido desde las 19:00 y se cierra a las 22:00
+function reglas(fecha){
+  var d = diaDe(fecha);
+  if(horarioIA(d, fecha)) return {seguido:false, pausaFija:PAUSA, libresDesde:19*60, tope:22*60};
+  if(nuevoHorario(d, fecha)) return {seguido:false, pausaFija:PAUSA, libresDesde:19*60, tope:22*60};
+  return {seguido:false, libresDesde:0, tope: d===5 ? 19*60 : 25*60};
+}
+function topePorDefecto(d, fecha){ return reglas(fecha || hoyLogico()).tope; }
+function minDe(b){ return (b && b.min) || DUR; }
 function dd(n){return n<10?"0"+n:""+n}
 function reloj(m){m=((m%1440)+1440)%1440;return Math.floor(m/60)+":"+dd(m%60)}
 function dur(m){var h=Math.floor(m/60);return h+":"+dd(m%60)}
@@ -367,15 +375,16 @@ function dur(m){var h=Math.floor(m/60);return h+":"+dd(m%60)}
 // 4. Después del descanso largo los bloques vuelven a la hora en punto.
 function snapHora(m){ return m % 30 === 0 ? m : m + (30 - m % 30); }
 
-function armar(dia, inicio, tope, hechos, comprimir){
-  hechos = hechos || {};
-  var pend = pool(dia).filter(function(t){return !hechos[t.id]}).sort(function(a,b){return a.p-b.p});
+// `lista`: tareas pendientes ya elegidas y con su prioridad `p` (menor = primero); ver listaPara()
+function armar(lista, inicio, tope, comprimir, rg){
+  rg = rg || {seguido:false, libresDesde:0};
+  var pend = lista.slice().sort(function(a,b){return a.p-b.p});
 
   // una fija (Bibi) solo sigue viva si su hora no pasó y entra completa antes del tope
   var fijas = [], perdidas = [], libres = [];
   pend.forEach(function(t){
     if(t.fijo === undefined){ libres.push(t); return; }
-    if(t.fijo + DUR <= tope && t.fijo >= inicio - 5) fijas.push(t);
+    if(t.fijo + minDe(t) <= tope && t.fijo >= inicio - 5) fijas.push(t);
     else perdidas.push(t);
   });
   fijas.sort(function(a,b){return a.fijo-b.fijo});
@@ -390,13 +399,13 @@ function armar(dia, inicio, tope, hechos, comprimir){
     // la fija manda: si ya es su hora, va
     if(f && t >= f.fijo - 5 && t <= f.fijo + 5){
       fijas.shift();
-      plan.push({ini:f.fijo, fin:f.fijo+DUR, b:f});
-      t = f.fijo + DUR; enPar++;
+      plan.push({ini:f.fijo, fin:f.fijo+minDe(f), b:f});
+      t = f.fijo + minDe(f); enPar++;
       if(!cierraPausa()) break;
       continue;
     }
     // si la fija está adelante y no cabe un bloque entero antes, esperas
-    if(f && t + DUR > f.fijo){
+    if(f && t + minDe(libres[0]) > f.fijo){
       if(f.fijo - t >= 15){
         plan.push({espera:true, ini:t, fin:f.fijo});
         enPar = 0;            // la espera larga cuenta como descanso
@@ -405,11 +414,17 @@ function armar(dia, inicio, tope, hechos, comprimir){
       continue;
     }
     if(!libres.length) break;
-    if(t + DUR > tope) break;
+    // los bloques libres no empiezan antes de su hora (entre semana, después de la clase, desde las 19:00)
+    if(rg.libresDesde && t < rg.libresDesde && !(f && f.fijo < rg.libresDesde)){
+      if(rg.libresDesde - t >= 15) plan.push({espera:true, libre:true, ini:t, fin:rg.libresDesde});
+      t = rg.libresDesde; enPar = 0;
+      continue;
+    }
+    if(t + minDe(libres[0]) > tope) break;
 
     var b = libres.shift();
-    plan.push({ini:t, fin:t+DUR, b:b});
-    t += DUR; enPar++;
+    plan.push({ini:t, fin:t+minDe(b), b:b});
+    t += minDe(b); enPar++;
     if(!cierraPausa()) break;
   }
 
@@ -417,6 +432,16 @@ function armar(dia, inicio, tope, hechos, comprimir){
   // devuelve false cuando ya no cabe nada más y el día cierra.
   function cierraPausa(){
     if(!quedanTareas()) return false;
+    if(rg.seguido) return true;   // horario de corrido: sin descansos entre bloques
+    if(rg.pausaFija){             // entre semana: 10 min de descanso después de cada bloque, sin descanso largo
+      if(!libres.length) return false;
+      if(rg.libresDesde && t < rg.libresDesde) return true;   // después de la clase viene la espera hasta las 19:00
+      var sig = t + rg.pausaFija;
+      if(sig + minDe(libres[0]) > tope) return false;
+      plan.push({pausa:rg.pausaFija, ini:t, fin:sig});
+      t = sig;
+      return true;
+    }
     var f = fijas[0];
     if(enPar < 2){
       // si la clase se viene y ya no cabe un bloque antes, se espera hasta su hora
@@ -462,7 +487,17 @@ function leer(){
   catch(e){ return {hechos:{}, minutos:0, racha:0, ultAnki:null}; }
 }
 function guardar(s){ try{ localStorage.setItem(KEY, JSON.stringify(s)); }catch(e){} }
-function claveHoy(){ var d=new Date(); return d.getFullYear()+"-"+dd(d.getMonth()+1)+"-"+dd(d.getDate()); }
+function isoDe(d){ return d.getFullYear()+"-"+dd(d.getMonth()+1)+"-"+dd(d.getDate()); }
+// el día de estudio va de 4 am a 4 am (igual que Anki): a la 1 am todavía es el día anterior
+var CORTE = 4*60;
+function hoyLogico(){ return isoDe(new Date(Date.now() - CORTE*60000)); }
+// minutos desde la medianoche del día de estudio (la 1 am = 25:00)
+function ahoraDia(){ var m = ahoraMin(); return m < CORTE ? m + 1440 : m; }
+function sumarDias(iso, n){ var d = new Date(iso+"T12:00:00"); d.setDate(d.getDate()+n); return isoDe(d); }
+function difDias(a, b){ return Math.round((new Date(b+"T12:00:00") - new Date(a+"T12:00:00"))/86400000); }
+function diaDe(iso){ return new Date(iso+"T12:00:00").getDay(); }
+// los bloques se guardan en el día del plan que tienes abierto, no en la fecha del reloj
+function claveHoy(){ return (ultimaVista && ultimaVista.fecha) || hoyLogico(); }
 
 /* ---------- render ---------- */
 var estado = leer();
@@ -472,28 +507,65 @@ var ultimaVista = null;
 
 function exprime(){ var c=document.getElementById("inExprime"); return !c || c.checked; }
 
-function pintarPlan(dia, inicio, tope, titulo){
+// Qué entra en el plan. modo "tiempo": el orden que calcula el cuaderno (lo que más te acerca a B2 ahora, incluido
+// lo atrasado de otros días); modo "normal": solo los bloques de ese día, en ese mismo orden inteligente.
+function tareaDe(id, fecha){
+  var b = pool(diaDe(fecha), fecha).filter(function(x){ return x.id === id; })[0];
+  return b ? Object.assign({}, b, {fecha:fecha}) : null;
+}
+function listaPara(fecha, modo){
+  var hechos = estado.hechos || {};
+  function hecho(id, f){ return (hechos[f] || {})[id]; }
+  var rank = estado.rank || [], out = [];
+  // la clase con Bibi del día (hora fija), si sigue pendiente
+  pool(diaDe(fecha), fecha).forEach(function(b){
+    if(b.fijo !== undefined && !hecho(b.id, fecha)) out.push(Object.assign({}, b, {fecha:fecha, p:-1}));
+  });
+  if(modo === "tiempo"){
+    rank.forEach(function(r, i){
+      var t = tareaDe(r.id, r.fecha);
+      if(t && !hecho(r.id, r.fecha)){ t.p = i; t.why = r.reasons; out.push(t); }
+    });
+  }else{
+    var pos = {};
+    rank.forEach(function(r, i){ if(r.fecha === fecha && !(r.id in pos)) pos[r.id] = {i:i, why:r.reasons}; });
+    pool(diaDe(fecha), fecha).forEach(function(b){
+      if(b.fijo !== undefined || hecho(b.id, fecha)) return;
+      var r = pos[b.id], t = Object.assign({}, b, {fecha:fecha});
+      t.p = r ? r.i : 100 + b.p; t.why = r ? r.why : null;
+      out.push(t);
+    });
+  }
+  return out;
+}
+
+function pintarPlan(fecha, inicio, tope, titulo, modo){
+  modo = modo || "normal";
   var comprimir = exprime();
-  ultimaVista = {dia:dia, inicio:inicio, tope:tope, titulo:titulo};
-  var hechosHoy = estado.hechos[claveHoy()] || {};
-  var r = armar(dia, inicio, tope, hechosHoy, comprimir);
-  vistaActual = {dia:dia, plan:r.plan};
+  var dia = diaDe(fecha);
+  ultimaVista = {fecha:fecha, dia:dia, inicio:inicio, tope:tope, titulo:titulo, modo:modo, diaReal: fecha === hoyLogico()};
+  var hechosHoy = estado.hechos[fecha] || {};
+  var rg = reglas(fecha);
+  var r = armar(listaPara(fecha, modo), inicio, tope, comprimir, rg);
+  vistaActual = {fecha:fecha, dia:dia, plan:r.plan};
   // Material del cuaderno de sesiones con Bibi: los bloques de writing y shadowing practican los errores reales
   var CUADERNO = "https://cuaderno-junior.vercel.app/";
   function material(b){
     if(/^write/.test(b.id)) return '<a class="blk-link" href="'+CUADERNO+'#practica" target="_blank" rel="noopener">Tema y estructuras de hoy →</a>';
     if(/^shadow/.test(b.id)) return '<a class="blk-link" href="'+CUADERNO+'#practica" target="_blank" rel="noopener">Tus frases corregidas para shadowing →</a>';
+    if(b.id === "ia") return '<a class="blk-link" href="'+CUADERNO+'#ia" target="_blank" rel="noopener">Prompt de hoy para la IA →</a>';
     if(/bibi/i.test(b.nombre || "")) return '<a class="blk-link" href="'+CUADERNO+'" target="_blank" rel="noopener">Cuaderno de sesiones →</a>';
     return "";
   }
   var cont = document.getElementById("hoyBlocks");
   var html = "", total = 0, bloques = 0, recortes = 0;
 
-  var yaHechos = pool(dia).filter(function(b){return hechosHoy[b.id]});
+  var yaHechos = pool(dia, fecha).filter(function(b){return hechosHoy[b.id]});
+  var minHechos = yaHechos.reduce(function(n, b){ return n + minDe(b); }, 0);
   if(yaHechos.length){
-    html += '<p class="sep">Ya hecho hoy · '+dur(yaHechos.length*DUR)+'</p>';
+    html += '<p class="sep">Ya hecho hoy · '+dur(minHechos)+'</p>';
     yaHechos.forEach(function(b){
-      html += '<div class="blk b-'+b.hilo+' done" data-id="'+b.id+'">'+
+      html += '<div class="blk b-'+b.hilo+' done" data-id="'+b.id+'" data-fecha="'+fecha+'">'+
         '<input type="checkbox" class="chk" checked aria-label="marcar como no hecho">'+
         '<div class="blk-main"><p class="blk-head">'+b.skill+'</p>'+
         '<p class="blk-body">'+b.txt+'</p>'+material(b)+'</div></div>';
@@ -518,24 +590,40 @@ function pintarPlan(dia, inicio, tope, titulo){
       return;
     }
     if(it.espera){
-      html += '<p class="pause-long">'+reloj(it.ini)+" – "+reloj(it.fin)+' · libre hasta la sesión</p>';
+      html += '<p class="pause-long">'+reloj(it.ini)+" – "+reloj(it.fin)+(it.libre ? ' · libre' : ' · libre hasta la sesión')+'</p>';
       return;
     }
-    total += DUR; bloques++;
-    html += '<div class="blk b-'+it.b.hilo+'" data-id="'+it.b.id+'">'+
+    total += minDe(it.b); bloques++;
+    var otroDia = it.b.fecha && it.b.fecha !== fecha;
+    html += '<div class="blk b-'+it.b.hilo+'" data-id="'+it.b.id+'" data-fecha="'+(it.b.fecha || fecha)+'">'+
       '<input type="checkbox" class="chk" aria-label="marcar como hecho">'+
       '<div class="blk-main">'+
-        '<p class="blk-head">'+reloj(it.ini)+" – "+reloj(it.fin)+" · "+it.b.skill+'</p>'+
-        '<p class="blk-body">'+it.b.txt+'</p>'+material(it.b)+
+        '<p class="blk-head">'+reloj(it.ini)+" – "+reloj(it.fin)+" · "+it.b.skill+
+          (otroDia ? '<span class="from-day">del '+DIAS[diaDe(it.b.fecha)]+' '+parseInt(it.b.fecha.slice(8),10)+'</span>' : '')+'</p>'+
+        '<p class="blk-body">'+it.b.txt+'</p>'+
+        (it.b.why && it.b.why.length ? '<p class="why">Por qué ahora: '+it.b.why[0]+'.</p>' : '')+
+        material(it.b)+
       '</div></div>';
   });
 
-  if(r.perdidas.length){
+  if(r.perdidas.length && modo === "normal"){
     html += '<p class="note"><b>Se te pasó:</b> '+
       r.perdidas.map(function(b){return b.nombre}).join(", ")+
       '. No la reubico porque tiene hora fija.</p>';
   }
-  if(r.fuera.length){
+  if(r.fuera.length && modo === "tiempo" && r.plan.length){
+    html += '<p class="note"><b>Lo que sigue en la fila</b> si te sobra tiempo: '+
+      r.fuera.slice(0, 3).map(function(b){ return b.nombre + (b.fecha !== fecha ? ' (del '+DIAS[diaDe(b.fecha)]+')' : ''); }).join(", ")+'.</p>';
+    // con tus reglas de descanso a veces 10 minutos más valen un bloque entero: te lo digo
+    for(var extra = 5; extra <= 60; extra += 5){
+      var r2 = armar(listaPara(fecha, modo), inicio, tope + extra, comprimir, rg);
+      if(r2.plan.filter(function(x){ return x.b; }).length > bloques){
+        html += '<p class="note"><b>Con '+extra+' min más</b> (hasta las '+reloj(tope + extra)+') entra también '+r2.plan.filter(function(x){ return x.b; })[bloques].b.nombre+
+          (rg.seguido ? '.</p>' : '. Tus reglas piden un descanso largo después de cada par de bloques.</p>');
+        break;
+      }
+    }
+  }else if(r.fuera.length && modo === "normal"){
     html += '<p class="note"><b>No alcanzó el tiempo para '+r.fuera.length+' bloque'+
       (r.fuera.length===1?"":"s")+':</b> '+
       r.fuera.map(function(b){return b.nombre}).join(", ")+
@@ -543,8 +631,11 @@ function pintarPlan(dia, inicio, tope, titulo){
       '. Son los de menor prioridad para tu B2, por eso caen últimos. Mañana vuelve completo.</p>';
   }
 
-  var hechoMin = yaHechos.length*DUR;
-  if(!r.plan.length){
+  var hechoMin = minHechos;
+  if(!r.plan.length && modo === "tiempo"){
+    html += '<p class="hint">Hasta las '+reloj(tope)+' no entra un bloque completo de 50 minutos. Descansa: cuando vuelvas, dime cuánto tiempo tienes y sigo con lo que está en la fila'+
+      (r.fuera.length ? ' (primero: '+r.fuera[0].nombre+')' : '')+'.</p>';
+  }else if(!r.plan.length){
     html += yaHechos.length && !r.fuera.length && !r.perdidas.length
       ? '<p class="hint">Día completo. Nada pendiente.</p>'
       : '<p class="hint">No queda tiempo para ningún bloque completo. Haz solo Anki, aunque sean 20 minutos.</p>';
@@ -552,27 +643,30 @@ function pintarPlan(dia, inicio, tope, titulo){
   cont.innerHTML = html;
   document.getElementById("hoyTit").textContent = titulo;
   document.getElementById("hoySub").textContent =
-    DIAS[dia].charAt(0).toUpperCase()+DIAS[dia].slice(1)+
+    DIAS[dia].charAt(0).toUpperCase()+DIAS[dia].slice(1)+" "+parseInt(fecha.slice(8),10)+
+    (fecha !== hoyLogico() ? " (no es hoy)" : "")+
     (hechoMin ? " · "+dur(hechoMin)+" hechas" : "")+
-    " · "+bloques+" bloque"+(bloques===1?"":"s")+" por delante, "+dur(total)+
-    " desde "+reloj(inicio)+" hasta "+reloj(tope)+
+    (!bloques && modo === "tiempo" ? " · ya no entra otro bloque" :
+      " · "+bloques+" bloque"+(bloques===1?"":"s")+" por delante, "+dur(total)+" desde "+reloj(inicio)+" hasta "+reloj(tope))+
     (recortes ? " · descanso recortado para ganar un bloque" : "");
 
   cont.querySelectorAll(".chk").forEach(function(c){
     c.addEventListener("change", function(){
-      var id = c.closest(".blk").getAttribute("data-id");
-      var k = claveHoy();
+      var el = c.closest(".blk");
+      var id = el.getAttribute("data-id");
+      var k = el.getAttribute("data-fecha") || claveHoy();   // cada bloque se acredita a su día
       estado.hechos[k] = estado.hechos[k] || {};
+      var mins = minDe(pool(diaDe(k), k).filter(function(x){ return x.id === id; })[0]);
       if(c.checked){
         estado.hechos[k][id] = true;
-        estado.minutos += DUR;
+        estado.minutos += mins;
         if(id==="anki" && estado.ultAnki !== k){
           estado.racha = (estado.racha||0) + 1;
           estado.ultAnki = k;
         }
       }else{
         delete estado.hechos[k][id];
-        estado.minutos = Math.max(0, estado.minutos - DUR);
+        estado.minutos = Math.max(0, estado.minutos - mins);
         if(id==="anki" && estado.ultAnki === k){
           estado.racha = Math.max(0, (estado.racha||0) - 1);
           estado.ultAnki = null;
@@ -583,18 +677,16 @@ function pintarPlan(dia, inicio, tope, titulo){
       // con la que reordenaste: esa ya pasó y volvía a poner bloques en el pasado.
       var v = ultimaVista;
       var ini = v.inicio, tit = v.titulo;
-      if(esHoy(v.dia)){
-        var ahora = ahoraMin();
-        if(ahora < 120) ahora += 1440;
-        if(c.checked) ahora += PAUSA;        // acabas de cerrar un bloque: tus 10 min
+      if(v.fecha === hoyLogico()){
+        var ahora = ahoraDia();
+        if(c.checked && !reglas(v.fecha).seguido) ahora += PAUSA;   // acabas de cerrar un bloque: tus 10 min (de corrido, sin pausa)
         ahora = Math.ceil(ahora/5)*5;
         if(ahora > ini){
           ini = Math.min(ahora, v.tope);
-          tit = "Día reordenado";
-          ponerHora(document.getElementById("inHora"), ini);
+          if(v.modo !== "tiempo") tit = "Día reordenado";
         }
       }
-      pintarPlan(v.dia, ini, v.tope, tit);
+      pintarPlan(v.fecha, ini, v.tope, tit, v.modo);
       pintarAhora();
     });
   });
@@ -602,8 +694,8 @@ function pintarPlan(dia, inicio, tope, titulo){
 }
 
 function pintarStats(){
-  var hechosHoy = estado.hechos[claveHoy()] || {};
-  var minHoy = Object.keys(hechosHoy).length * DUR;
+  var hechosHoy = estado.hechos[claveHoy()] || {}, fh = claveHoy();
+  var minHoy = pool(diaDe(fh), fh).filter(function(b){ return hechosHoy[b.id]; }).reduce(function(n, b){ return n + minDe(b); }, 0);
   document.getElementById("stHoy").textContent = dur(minHoy);
   document.getElementById("stRacha").textContent = estado.racha || 0;
   // cuenta en minutos: un bloque de 50 ya mueve la barra, no hay que juntar una hora entera
@@ -617,22 +709,14 @@ function pintarStats(){
 
 function ahoraMin(){ var d=new Date(); return d.getHours()*60+d.getMinutes(); }
 
-// "HH:MM" -> minutos del día. Lo de madrugada pertenece a la noche anterior.
-function leerHora(el){
-  var v = el && el.value;
-  if(!v) return null;
-  var p = v.split(":");
-  var m = parseInt(p[0],10)*60 + parseInt(p[1],10);
-  if(isNaN(m)) return null;
-  if(m < 120) m += 1440;
-  return m;
-}
-function ponerHora(el, m){ m=((m%1440)+1440)%1440; el.value = dd(Math.floor(m/60))+":"+dd(m%60); }
-
 function pintarAhora(){
   if(!vistaActual){ return; }
-  var m = ahoraMin();
-  if(m < 120) m += 1440; // madrugada pertenece al día anterior
+  if(vistaActual.fecha !== hoyLogico()){
+    document.getElementById("nowText").textContent = "Estás viendo el plan del "+DIAS[vistaActual.dia]+" "+parseInt(vistaActual.fecha.slice(8),10)+": marca lo que vayas haciendo.";
+    document.getElementById("nowTime").textContent = "";
+    return;
+  }
+  var m = ahoraDia(); // madrugada (antes de las 4) pertenece al día anterior
   var act=null, sig=null;
   for(var i=0;i<vistaActual.plan.length;i++){
     var it = vistaActual.plan[i];
@@ -647,36 +731,47 @@ function pintarAhora(){
 }
 
 /* ---------- arranque ---------- */
-function esHoy(dia){ return dia === new Date().getDay(); }
-function diaSeleccionado(){
-  var v = document.getElementById("inDia").value;
-  return v==="auto" ? new Date().getDay() : parseInt(v,10);
+function pintarDia(){
+  var f = hoyLogico(), el = document.getElementById("diaEstudio");
+  if(el) el.textContent = DIAS[diaDe(f)]+" "+parseInt(f.slice(8),10);
 }
 function normal(){
-  var d = diaSeleccionado();
-  var ini = (d===0||d===6) ? 8*60 : 17*60;
-  ponerHora(document.getElementById("inTope"), topePorDefecto(d));
-  pintarPlan(d, ini, topePorDefecto(d), "Plan normal");
+  var f = hoyLogico(), d = diaDe(f);
+  var hs = document.getElementById("inHasta"); if(hs) hs.value = "";
+  // finde: sin hora fija, arranca ahora; entre semana: desde las 19:00 o desde ahora si ya pasó
+  var ahora = Math.ceil(ahoraDia()/5)*5;
+  var ini = (d===0||d===6) ? ahora : horarioIA(d, f) ? Math.max(19*60, ahora) : 17*60;
+  marcarChip(null);
+  pintarDia();
+  pintarPlan(f, ini, topePorDefecto(d, f), "Plan normal", "normal");
   pintarAhora();
 }
-document.getElementById("btnRe").addEventListener("click", function(){
-  var elH = document.getElementById("inHora"), elT = document.getElementById("inTope");
-  var ini = leerHora(elH);
-  if(ini === null){ elH.focus(); return; }
-  var d = diaSeleccionado();
-  var tope = leerHora(elT);
-  if(tope === null){ tope = topePorDefecto(d); ponerHora(elT, tope); }
-  // si escribes un cierre anterior al arranque, lo empujo al día siguiente
-  if(tope <= ini) tope += 1440;
-  if(tope - ini > 20*60){ tope = ini + 60; ponerHora(elT, tope); }
-  pintarPlan(d, ini, tope, "Día reordenado");
+function marcarChip(el){
+  document.querySelectorAll("#chips .chip").forEach(function(c){ c.classList.toggle("on", c === el); });
+}
+// empiezas ahora (redondeado a 5 min) y cierras cuando te alcance el tiempo
+function conTiempo(tope, el){
+  var ini = Math.ceil(ahoraDia()/5)*5;
+  marcarChip(el);
+  pintarDia();
+  var h = Math.floor((tope-ini)/60), mm = (tope-ini)%60;
+  // aunque no entre ningún bloque se vuelve a pintar: nunca queda el plan anterior en pantalla
+  var tit = tope > ini ? "Hasta las "+reloj(tope)+" · "+(h ? h+" h" : "")+(mm ? " "+mm+" min" : "") : "Hasta las "+reloj(tope);
+  pintarPlan(hoyLogico(), ini, tope, tit, "tiempo");
   pintarAhora();
+  var hp = document.getElementById("hoyPanel"); if(hp) hp.scrollIntoView({behavior:"smooth", block:"start"});
+}
+document.getElementById("inHasta").addEventListener("change", function(){
+  var v = this.value;
+  if(!v){ normal(); return; }       // borrar la hora = volver al plan normal
+  var p = v.split(":"), m = parseInt(p[0],10)*60 + parseInt(p[1],10);
+  if(m < CORTE) m += 1440;          // "hasta las 2:00" = madrugada del mismo día de estudio
+  conTiempo(m, null);
 });
 document.getElementById("btnNormal").addEventListener("click", normal);
-document.getElementById("inDia").addEventListener("change", normal);
 document.getElementById("inExprime").addEventListener("change", function(){
   var v = ultimaVista;
-  if(v){ pintarPlan(v.dia, v.inicio, v.tope, v.titulo); pintarAhora(); }
+  if(v){ pintarPlan(v.fecha, v.inicio, v.tope, v.titulo, v.modo); pintarAhora(); }
 });
 
 (function countdown(){
@@ -685,12 +780,9 @@ document.getElementById("inExprime").addEventListener("change", function(){
   if(dias>0) document.getElementById("countdown").textContent = dias+" días";
 })();
 
-(function preset(){
-  ponerHora(document.getElementById("inHora"), ahoraMin());
-})();
-
 normal();
-setInterval(pintarAhora, 30000);
+// si la pestaña queda abierta y cambia el día de estudio (4 am), se vuelve a armar el plan del día nuevo
+setInterval(function(){ if(ultimaVista && ultimaVista.fecha !== hoyLogico() && ultimaVista.diaReal) normal(); else pintarAhora(); }, 30000);
 })();
 </script>
 </body>
