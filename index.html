@@ -76,22 +76,13 @@ h1{font-size:clamp(28px,5vw,44px);line-height:1.02;letter-spacing:-.025em;font-w
 .now-txt{font-size:18px;font-weight:500;letter-spacing:-.01em;margin:0}
 .now-time{font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums;margin-left:auto;flex-shrink:0}
 
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:10px;margin-bottom:11px}
-.stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
-.stat span{display:block;font-size:12.5px;color:var(--ink-2);margin-bottom:3px}
-.stat b{font-size:21px;font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
 
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-bottom:11px}
 .panel h2{font-size:18px;font-weight:600;letter-spacing:-.02em;margin:0 0 4px}
 .panel .hint{font-size:13.5px;color:var(--ink-2);margin:0 0 15px;max-width:62ch}
 
 .ctrl{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
-.chips{margin-top:12px}
-button.chip{background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:10px 18px;min-height:44px}
-button.chip:hover{border-color:var(--ink-2)}
-button.chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 label.fld.inline{flex-direction:row;align-items:center;gap:8px;font-size:13.5px}
-.why{margin:4px 0 0;font-size:12.5px;color:var(--ink-2)}
 .from-day{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.02em;text-transform:uppercase;color:var(--ink-3);margin-left:6px}
 label.fld{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--ink-2)}
 input[type=time],select{
@@ -106,17 +97,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .prog i{display:block;height:100%;background:var(--fluidez);border-radius:99px;
   min-width:0;transition:width .25s ease}
 
-.legend{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0}
-.tag{font-size:13px;padding:5px 12px;border-radius:99px;font-weight:500}
-.t-input{background:var(--input-bg);color:var(--input)}
-.t-output{background:var(--output-bg);color:var(--output)}
-.t-lengua{background:var(--lengua-bg);color:var(--lengua)}
-.t-fluidez{background:var(--fluidez-bg);color:var(--fluidez)}
 
-.days{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px;align-items:start}
-.day{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
-.day h2{font-size:19px;font-weight:600;letter-spacing:-.02em;margin:0 0 2px}
-.day .meta{font-size:13px;color:var(--ink-2);margin:0 0 16px}
 
 .blk{border-left:3px solid;border-radius:0 9px 9px 0;padding:9px 12px;margin-bottom:6px;
   display:flex;gap:10px;align-items:flex-start}
@@ -138,22 +119,13 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .note{font-size:12.5px;color:var(--ink-2);background:var(--bg);border:1px dashed var(--line);
   border-radius:8px;padding:9px 12px;margin:12px 0 0;line-height:1.45}
 .note b{color:var(--ink);font-weight:600}
-label.chkfld{flex-direction:row;align-items:center;gap:8px;font-size:12.5px;
-  color:var(--ink-2);align-self:flex-end;min-height:42px;cursor:pointer}
-label.chkfld input{width:19px;height:19px;accent-color:var(--ink);cursor:pointer}
 .pause{font-size:11.5px;color:var(--ink-3);margin:0 0 6px;padding-left:13px}
 .pause-long{font-size:11.5px;color:var(--ink-2);font-weight:500;margin:6px 0 11px;
   padding:6px 12px;background:var(--bg);border-radius:7px}
-.day .close{font-size:12.5px;color:var(--ink-2);margin:12px 0 0;padding-top:11px;border-top:1px solid var(--line)}
 
-.rules{margin-top:22px}
-.rules ul{margin:0;padding-left:19px;display:flex;flex-direction:column;gap:9px}
-.rules li{font-size:14.5px;line-height:1.5;color:var(--ink-2)}
-.rules b{color:var(--ink);font-weight:600}
 
 details{margin-top:11px}
 summary{cursor:pointer;font-size:14.5px;font-weight:500;padding:6px 0}
-footer{margin-top:26px;font-size:13px;color:var(--ink-3)}
 
 @media (max-width:560px){
   .wrap{padding:24px 15px 52px}
@@ -161,140 +133,97 @@ footer{margin-top:26px;font-size:13px;color:var(--ink-3)}
   .deadline{text-align:left}
   .now-time{margin-left:0;width:100%}
   .ctrl{flex-direction:column;align-items:stretch}
-  .ctrl.chips{flex-direction:row;flex-wrap:wrap}
-  .ctrl.chips button.chip{flex:1 0 28%}
-  .ctrl.chips label.fld.inline{width:100%;white-space:nowrap}
-  .ctrl.chips label.fld.inline input{flex:1}
   label.fld{width:100%}
   input[type=time],select,button{width:100%}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.layout{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"now" "blocks" "b2" "porque"}
+.layout>.now{grid-area:now}.layout>#hoyPanel{grid-area:blocks}.layout>.b2{grid-area:b2}.layout>.porque{grid-area:porque}
+@media (min-width:960px){
+  .layout{grid-template-columns:minmax(0,1fr) 320px;grid-template-areas:"blocks now" "blocks b2" "blocks porque" "blocks .";grid-template-rows:auto auto auto 1fr;column-gap:28px}
+  .layout>.now{flex-direction:column;align-items:flex-start;gap:4px;margin:0 0 14px}
+  .layout>.now .now-time{margin-left:0}
+  .layout>.b2{margin:0 0 6px}
+  .layout>.porque{margin-top:10px}
+  #hoyPanel{max-width:760px}
+}
+/* ---------- vista de hoy (17-10): solo lo que se usa, pasos plegados ---------- */
+.masthead{align-items:center;margin-bottom:16px}
+h1{font-size:clamp(26px,4.5vw,36px);max-width:none}
+.kpis{display:flex;gap:16px;flex-wrap:wrap;margin:6px 0 0;font-size:14px;color:var(--ink-2)}
+.kpis b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+.hasta{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--ink-2)}
+.now{margin-bottom:18px}
+.day-sub{font-size:14px;color:var(--ink-2);margin:0 0 10px}
+#hoyBlocks .blk{background:var(--panel);border:1px solid var(--line);border-left:4px solid;border-radius:0 12px 12px 0;color:var(--ink);padding:12px 14px 12px 6px;gap:4px;margin-bottom:8px}
+#hoyBlocks .b-input{border-left-color:var(--input)}#hoyBlocks .b-output{border-left-color:var(--output)}
+#hoyBlocks .b-lengua{border-left-color:var(--lengua)}#hoyBlocks .b-fluidez{border-left-color:var(--fluidez)}
+.chk-hit{display:flex;align-items:flex-start;justify-content:center;min-width:48px;min-height:48px;padding-top:12px;cursor:pointer}
+.chk-hit .chk{margin:0;accent-color:var(--ink)}
+.blk-time{font-size:12.5px;color:var(--ink-2);font-variant-numeric:tabular-nums;margin:2px 0 1px}
+.blk-tit{font-size:16.5px;font-weight:600;letter-spacing:-.01em;margin:0}
+.blk-sub{font-size:14px;color:var(--ink-2);margin:2px 0 0;line-height:1.4}
+.how{margin-top:8px}
+.how summary{font-size:13.5px;font-weight:600;color:var(--ink-2);padding:6px 0;min-height:32px;list-style-position:inside}
+.how ol{margin:4px 0 2px;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:14.5px;line-height:1.45;color:var(--ink)}
+.blk-acts{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+#hoyBlocks .blk-link{font-size:13.5px;color:var(--ink)}
+#hoyBlocks .done .blk-tit,#hoyBlocks .done .blk-time{opacity:.5;text-decoration:line-through}
+#hoyBlocks .done{padding-top:4px;padding-bottom:4px}
+.b2{margin:26px 0 8px}
+.b2-row{display:flex;justify-content:space-between;gap:12px;font-size:13.5px;color:var(--ink-2)}
+.porque{margin-top:18px;border-top:1px solid var(--line);padding-top:6px}
+.porque ul{margin:6px 0 0;padding-left:19px;display:flex;flex-direction:column;gap:8px;font-size:14px;color:var(--ink-2);line-height:1.5}
+.porque b{color:var(--ink);font-weight:600}
+@media (max-width:560px){
+  .masthead{flex-direction:column;align-items:stretch}
+  .hasta input{flex:1}
+  .kpis{gap:12px}
+}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <div class="masthead">
-    <h1>Plan de inglés de Junior</h1>
-    <div class="deadline">
-      Examen EF SET de control<br>
-      <b id="countdown">15 nov</b>
-      meta: 40 puntos
+  <header class="masthead">
+    <div>
+      <h1>Plan de inglés de Junior</h1>
+      <p class="kpis"><span>Hoy <b id="stHoy">0:00</b></span><span>Racha Anki <b id="stRacha">0</b></span><span>EF SET en <b id="countdown">—</b></span></p>
     </div>
-  </div>
+    <label class="hasta">Termino a las <input type="time" id="inHasta" aria-label="Hora en que terminas hoy"></label>
+  </header>
 
-  <div class="now">
+  <div class="layout">
+  <div class="now" aria-live="polite">
     <span class="now-tag">Ahora</span>
     <p class="now-txt" id="nowText">Cargando…</p>
     <span class="now-time" id="nowTime"></span>
   </div>
 
-  <div class="stats">
-    <div class="stat"><span>Lun a vie</span><b>19–22</b></div>
-    <div class="stat"><span>Finde</span><b>a tu hora</b></div>
-    <div class="stat"><span>Hoy llevas</span><b id="stHoy">0:00</b></div>
-    <div class="stat"><span>Racha Anki</span><b id="stRacha">0</b></div>
-    <div class="stat"><span>Horas totales</span><b id="stTotal">0:00</b></div>
-  </div>
-
-  <section class="panel" id="tiempoPanel">
-    <h2>¿Hasta qué hora estudias?</h2>
-    <p class="hint">Estudiando lo del <b id="diaEstudio">hoy</b>. Empiezas ahora y te armo lo que más te acerca a B2 hasta esa hora (bloques de 50 + 10; el fin de semana, con tus descansos largos). Si te sobra, entra lo más valioso que dejaste atrás. El día cambia a las 4 am, igual que en Anki.</p>
-    <div class="ctrl chips" id="chips">
-      <label class="fld inline">Termino a las <input type="time" id="inHasta"></label>
-    </div>
-    <div class="ctrl" style="margin-top:10px">
-      <label class="fld chkfld" title="Recorta el descanso largo a 30 min solo cuando con eso entra un bloque más">
-        <input type="checkbox" id="inExprime" checked> Exprimir el cierre
-      </label>
-      <button class="ghost" id="btnNormal">Volver al plan normal</button>
-    </div>
-  </section>
-
-  <section class="panel" id="hoyPanel">
-    <h2 id="hoyTit">Hoy</h2>
-    <p class="hint" id="hoySub"></p>
+  <section id="hoyPanel">
+    <p class="day-sub" id="hoySub"></p>
     <div id="hoyBlocks"></div>
   </section>
 
-  <section class="panel">
-    <h2>Camino a B2</h2>
-    <p class="hint">Desde A1 hasta B2 son unas 400 horas de estudio real. Esta barra cuenta solo los bloques que marcaste como hechos, no los planeados. Cada bloque marcado suma sus 50 minutos al toque: no espera a que junten una hora entera.</p>
+  <section class="b2" aria-label="Camino a B2">
+    <div class="b2-row"><span>Camino a B2</span><span id="progTxt"></span></div>
     <div class="prog"><i id="progBar" style="width:0%"></i></div>
-    <p class="hint" style="margin:8px 0 0" id="progTxt">0:00 de 400 horas hacia B2</p>
   </section>
 
-  <div class="legend">
-    <span class="tag t-input">Input · meto inglés</span>
-    <span class="tag t-output">Output · produzco</span>
-    <span class="tag t-lengua">Lengua · estudio piezas</span>
-    <span class="tag t-fluidez">Fluidez · uso lo que ya sé</span>
-  </div>
-
-  <details>
-    <summary>Ver la semana completa</summary>
-    <div class="days" style="margin-top:14px">
-
-      <section class="day">
-        <h2>Lunes a viernes</h2>
-        <p class="meta">3 h · 3 bloques de 50 · desde el 17 oct</p>
-        <div class="blk b-output"><div class="blk-main"><p class="blk-head">19:00 – 19:50 · speaking + listening</p><p class="blk-body">Sesión con IA grabada: conversación + listening tipo EF SET</p></div></div>
-        <p class="pause">10 min</p>
-        <div class="blk b-lengua"><div class="blk-main"><p class="blk-head">20:00 – 20:50 · vocabulario + gramática</p><p class="blk-body">Anki hasta 0 (~30 min) y gramática del día con la IA</p></div></div>
-        <p class="pause">10 min</p>
-        <div class="blk b-input"><div class="blk-main"><p class="blk-head">21:00 – 21:50 · reading + writing</p><p class="blk-body">Tu libro técnico en inglés (35 min) y un resumen escrito que corrige la IA (15 min)</p></div></div>
-        <p class="close">22:00 cierras el día. Las 6 cosas, todos los días. El orden real lo decide el cuaderno con tus datos.</p>
-      </section>
-
-      <section class="day">
-        <h2>Sábado y domingo</h2>
-        <p class="meta">4 h · 4 bloques · arranca a la hora en que abres el plan (ejemplo desde las 9:00)</p>
-        <div class="blk b-input"><div class="blk-main"><p class="blk-head">9:00 – 9:50 · reading + writing</p><p class="blk-body">Tu libro técnico y el resumen corregido</p></div></div>
-        <p class="pause">10 min</p>
-        <div class="blk b-lengua"><div class="blk-main"><p class="blk-head">10:00 – 10:50 · vocabulario + gramática</p><p class="blk-body">Anki hasta 0 y gramática del día</p></div></div>
-        <p class="pause-long">11:00 – 12:00 · descanso largo</p>
-        <div class="blk b-input"><div class="blk-main"><p class="blk-head">12:00 – 12:50 · listening</p><p class="blk-body">Charla o podcast técnico en 3 pasadas</p></div></div>
-        <p class="pause">10 min</p>
-        <div class="blk b-output"><div class="blk-main"><p class="blk-head">13:00 – 13:50 · writing</p><p class="blk-body">Sáb: tipo examen, cronometrado. Dom: reescribir los errores de la semana</p></div></div>
-        <p class="close">Dos bloques, una hora de descanso, dos bloques.</p>
-      </section>
-
-    </div>
+  <details class="porque">
+    <summary>Por qué está armado así</summary>
+    <ul>
+      <li><b>Arranque de 2 minutos</b> (Hábitos atómicos, Clear): a las 19:00 abres el plan y haces una tarjeta de Anki. Lo difícil es empezar.</li>
+      <li><b>Recuperar antes que releer</b> (Make It Stick): la sesión con IA empieza con tus errores reales, dichos bien y sin pista.</li>
+      <li><b>Intercalar</b> (Rohrer y Taylor): la gramática rota entre tus errores y mezcla el tema de ayer.</li>
+      <li><b>Práctica deliberada</b> (Peak, Ericsson): una meta medible por sesión y una sola mejora para mañana.</li>
+      <li><b>Dificultad deseable</b> (Bjork): el listening se escucha una vez, como en el examen; te corriges tú antes de la respuesta.</li>
+      <li><b>Curiosidad como combustible</b> (Krashen; Nation): lees lo que te apasiona, software, IA y robótica.</li>
+      <li><b>Medir cada 2 semanas</b>: domingo por medio, EF SET Quick Check de 15 min en efset.org.</li>
+      <li><b>Horario</b>: lunes a viernes de 19:00 a 22:00; sábado y domingo 4 h desde la hora en que abres el plan. Bloques de 50 + 10; el finde, una hora de descanso cada dos bloques.</li>
+    </ul>
   </details>
-
-  <section class="panel rules" style="margin-top:22px">
-    <h2>Por qué está armado así</h2>
-    <ul>
-      <li><b>Arranque de 2 minutos</b> (Hábitos atómicos, James Clear). Regla fija: a las 19:00 abro el plan y hago una tarjeta de Anki. Lo difícil es empezar, no seguir: Anki va primero porque cuesta poco arrancar.</li>
-      <li><b>Recuperar antes que releer</b> (Make It Stick, Brown, Roediger y McDaniel). La sesión con IA arranca con tus errores reales: los dices bien sin pista, 3 de la última sesión y 2 de hace una semana. Lo que cuesta recordar es lo que se queda.</li>
-      <li><b>Intercalar</b> (Rohrer y Taylor; Make It Stick). La gramática rota entre tus errores frecuentes y mezcla el tema de ayer en los últimos ejercicios. Repetir el mismo tema toda la semana se siente mejor, pero se olvida más.</li>
-      <li><b>Práctica deliberada</b> (Peak, Anders Ericsson). Una meta medible por sesión: la IA cuenta cuántas veces usaste bien tu meta de la semana y te deja UNA sola cosa para mejorar mañana.</li>
-      <li><b>Dificultad deseable</b> (Robert Bjork). El listening de la sesión se escucha una sola vez, como en el examen. Te corriges tú antes de recibir la respuesta.</li>
-      <li><b>Lo difícil con la mente fresca</b> (Pensar rápido, pensar despacio, Kahneman). Producir (hablar y escribir) gasta más que repasar: va en la parte del día en la que todavía rindes. El cansancio después del trabajo es real; por eso el bloque fácil va primero, como calentamiento.</li>
-      <li><b>Curiosidad como combustible</b> (Krashen; Four Strands de Nation). Leer lo que te apasiona (software, IA, robótica) sostiene la constancia más que cualquier libro graduado.</li>
-      <li><b>Medir sin esperar al examen</b>. Domingo por medio, el EF SET Quick Check de 15 min (efset.org) como último bloque. Sin un número cada 2 semanas, el plan va a ciegas.</li>
-    </ul>
-  </section>
-
-  <section class="panel rules" style="margin-top:22px">
-    <h2>Las reglas que sostienen esto</h2>
-    <ul>
-      <li><b>Entre semana (desde el 17 oct).</b> De 19:00 a 22:00: 3 bloques de 50 con 10 de descanso cada uno, sin descanso largo. A las 22:00 se cierra el día.</li>
-      <li><b>Fin de semana: 4 horas sin hora fija.</b> El plan arranca a la hora en que lo abres (hora de Perú): dos bloques, una hora de descanso, dos bloques.</li>
-      <li><b>Reading y gramática, todos los días.</b> Lees tus libros de software, IA y robótica en inglés: la curiosidad sostiene la constancia. La gramática va pegada a Anki y a tus errores reales.</li>
-      <li><b>Fin de semana: nunca tres bloques seguidos.</b> Dos con 10 minutos entre medio, después una hora completa de descanso.</li>
-      <li><b>Fin de semana, al retomar, el par arranca de cero.</b> Si volviste después de horas ya descansaste: el reordenador te mete dos bloques de 50 con 10 minutos entre medio y recién ahí el descanso largo. Nunca te manda a descansar después de un solo bloque.</li>
-      <li><b>La sesión con IA se graba siempre.</b> Pantalla con el audio de los dos: así el cuaderno saca tus errores y tus tarjetas igual que antes. Antes de empezar, pega el prompt de hoy (en Hoy).</li>
-      <li><b>Anki es lo último que se sacrifica.</b> 20 palabras nuevas al día, viernes incluido. Si el repaso pasa de 60 minutos, nuevas en cero hasta que baje.</li>
-      <li><b>Los bloques encadenan sobre el mismo material.</b> Lees el capítulo, escuchas ese audio, haces shadowing de ese audio.</li>
-      <li><b>Más de cinco palabras desconocidas por página (sin contar las técnicas que ya conoces)</b> significa que el libro está muy alto: pasa a uno más introductorio sin culpa.</li>
-      <li><b>Si con la IA no me siento cómodo,</b> busco otro tutor en Preply. La IA no reemplaza del todo a un humano: por eso cada sesión lleva el prompt con mis errores reales.</li>
-      <li><b>Si duermo menos de 7 horas tres días seguidos,</b> el último bloque de la noche se corta hasta recuperar.</li>
-      <li><b>El proyecto se retoma el primer fin de semana de enero de 2027,</b> haya o no trabajo remoto en USD.</li>
-    </ul>
-  </section>
-
-  <footer>Punto de partida: 29/100, A1 · 16 de septiembre de 2026. Clases con Bibi del 21 sep al 14 oct; desde el 17 oct, sesiones con IA. Tu progreso se guarda en este navegador.</footer>
+  </div>
 </div>
 
 <script>
@@ -352,6 +281,40 @@ var B_LISTENF = {id:"listen", nombre:"listening técnico", p:3, hilo:"input", sk
 var B_WRITEF = {id:"write2", nombre:"writing · examen o errores", p:4, hilo:"output", skill:"writing", txt:"Sábado: writing tipo examen, 20 min cronometrados y sin ayuda, después lo corriges con la IA. Domingo: reescribe bien los errores de la semana (están en Errores)"};
 function semana3(d){ return [B_IA, B_ANKIG, B_READT]; }
 function finde3(){ return [B_READT, B_ANKIG, B_LISTENF, B_WRITEF]; }
+// Cada bloque: título, una línea y los pasos (plegados en "Cómo"). link = [ruta, texto].
+B_IA.titulo = "Sesión con IA"; B_IA.sub = "Speaking + listening tipo EF SET, grabado"; B_IA.link = ["/ia", "Prompt de hoy"];
+B_IA.pasos = ["Graba la pantalla con audio, sin audífonos (así quedan tu voz y la de la IA).",
+  "Abre chatgpt.com o claude.ai en el navegador, pega el prompt de hoy y activa el modo voz.",
+  "Arranque: la IA te lee tus errores de antes y los dices bien, sin pista.",
+  "Conversa: hablas tú el 70 %. Si te corrige, lo intentas otra vez antes de que te dé la respuesta.",
+  "Listening: la IA lee un texto corto una sola vez y te hace 3 preguntas.",
+  "Cierre: escucha tus 5 errores y la única mejora para mañana. Detén la grabación."];
+B_ANKIG.titulo = "Anki + gramática"; B_ANKIG.sub = "Repasos hasta 0, después gramática con la IA"; B_ANKIG.link = ["/ia", "Prompt de gramática"];
+B_ANKIG.pasos = ["Anki: todos los repasos hasta que quede en 0 (unos 30 min).",
+  "Con lo que queda del bloque, copia el prompt de gramática y pégalo en la IA (en texto).",
+  "Haz los 10 ejercicios uno por uno. Si fallas, pide pista antes de ver la respuesta.",
+  "Las 3 frases que te da al final van a Anki."];
+B_READT.titulo = "Reading técnico + writing"; B_READT.sub = "Tu libro en inglés 35 min, resumen escrito 15 min"; B_READT.link = ["/ia", "Prompt de writing"];
+B_READT.pasos = ["Lee 35 min tu libro de software, IA o robótica. No traduzcas frase por frase.",
+  "Subraya 3 estructuras que te llamen la atención.",
+  "Cierra el libro y resume lo leído en 80 a 120 palabras, sin traductor.",
+  "Pega el prompt de writing y tu texto: la IA marca los errores y tú reescribes la versión buena.",
+  "Si hay más de 5 palabras desconocidas por página (sin contar las técnicas), el libro está muy alto: busca uno más introductorio."];
+B_LISTENF.titulo = "Listening técnico"; B_LISTENF.sub = "Charla o podcast en tramos de 2 a 3 min, 3 pasadas por tramo";
+B_LISTENF.pasos = ["Pasada 1: escucha el tramo entero sin texto y sin parar, aunque no entiendas todo.",
+  "Pasada 2: prende la transcripción en inglés. Frase por frase: pausa, entiende y repite la frase en voz alta.",
+  "Pasada 3: quita el texto y escucha el tramo entero otra vez, solo para comprobar que ya lo entiendes.",
+  "Sigue con el tramo siguiente. Si en la pasada 1 entiendes menos de la mitad, el audio está muy alto: busca uno más fácil.",
+  "Si sobra tiempo: shadowing de un tramo que ya entiendes (hablas encima del audio, imitando el ritmo)."];
+B_WRITEF.titulo = "Writing"; B_WRITEF.sub = function(fecha){ return diaDe(fecha) === 6 ? "Tipo examen: 20 min cronometrados, sin ayuda" : "Reescribe los errores de la semana"; };
+B_WRITEF.pasos = function(fecha){ return diaDe(fecha) === 6
+  ? ["Elige un tema y escribe 20 min con cronómetro, sin ayuda ni traductor.",
+     "Pega el prompt de writing y tu texto: la IA marca los errores.",
+     "Reescribe tú la versión correcta."]
+  : ["Abre Errores y reescribe bien cada frase de la semana, sin mirar la corrección.",
+     "Compara con la corrección y vuelve a escribir las que fallaste.",
+     "Domingo por medio: termina con el EF SET Quick Check de 15 min en efset.org."]; };
+B_WRITEF.link = function(fecha){ return diaDe(fecha) === 6 ? ["/ia", "Prompt de writing"] : ["/errores", "Tus errores"]; };
 var DIAS = ["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
 var DUR = 50, PAUSA = 10, PAUSA_LARGA = 60, PAUSA_MIN = 30;
 
@@ -563,26 +526,37 @@ function pintarPlan(fecha, inicio, tope, titulo, modo){
   // Material del cuaderno de sesiones con Bibi: los bloques de writing y shadowing practican los errores reales
   var CUADERNO = "https://cuaderno-junior.vercel.app/";
   function material(b){
+    var l = typeof b.link === "function" ? b.link(b.fecha || fecha) : b.link;
+    if(l) return '<a class="blk-link" href="'+l[0]+'">'+l[1]+' →</a>';
     if(/^write/.test(b.id)) return '<a class="blk-link" href="'+CUADERNO+'#practica" target="_blank" rel="noopener">Tema y estructuras de hoy →</a>';
     if(/^shadow/.test(b.id)) return '<a class="blk-link" href="'+CUADERNO+'#practica" target="_blank" rel="noopener">Tus frases corregidas para shadowing →</a>';
     if(b.id === "ia") return '<a class="blk-link" href="'+CUADERNO+'#ia" target="_blank" rel="noopener">Prompt de hoy para la IA →</a>';
     if(/bibi/i.test(b.nombre || "")) return '<a class="blk-link" href="'+CUADERNO+'" target="_blank" rel="noopener">Cuaderno de sesiones →</a>';
     return "";
   }
+  // una tarjeta: hora, título, una línea y los pasos plegados (Things 3: la nota de la tarea se abre solo si la buscas)
+  function tarjeta(b, it, f, hecho){
+    var pasos = typeof b.pasos === "function" ? b.pasos(f) : b.pasos;
+    var otroDia = b.fecha && b.fecha !== fecha;
+    return '<div class="blk b-'+b.hilo+(hecho ? ' done' : '')+'" data-id="'+b.id+'" data-fecha="'+(b.fecha || f)+'">'+
+      '<label class="chk-hit"><input type="checkbox" class="chk"'+(hecho ? ' checked aria-label="marcar como no hecho"' : ' aria-label="marcar como hecho"')+'></label>'+
+      '<div class="blk-main">'+
+        (it ? '<p class="blk-time">'+reloj(it.ini)+" – "+reloj(it.fin)+
+          (otroDia ? '<span class="from-day">del '+DIAS[diaDe(b.fecha)]+' '+parseInt(b.fecha.slice(8),10)+'</span>' : '')+'</p>' : '')+
+        '<p class="blk-tit">'+(b.titulo || b.nombre.charAt(0).toUpperCase()+b.nombre.slice(1))+'</p>'+
+        (hecho ? '' : '<p class="blk-sub">'+(typeof b.sub === "function" ? b.sub(f) : (b.sub || b.txt))+'</p>'+
+          '<div class="blk-acts">'+(pasos ? '<details class="how"><summary>Cómo</summary><ol>'+pasos.map(function(s){ return '<li>'+s+'</li>'; }).join("")+'</ol></details>' : '')+material(b)+'</div>')+
+      '</div></div>';
+  }
   var cont = document.getElementById("hoyBlocks");
-  var html = "", total = 0, bloques = 0, recortes = 0;
+  var html = "", total = 0, bloques = 0, recortes = 0, fin = inicio;
 
   var yaHechos = pool(dia, fecha).filter(function(b){return hechosHoy[b.id]});
   var minHechos = yaHechos.reduce(function(n, b){ return n + minDe(b); }, 0);
   if(yaHechos.length){
-    html += '<p class="sep">Ya hecho hoy · '+dur(minHechos)+'</p>';
-    yaHechos.forEach(function(b){
-      html += '<div class="blk b-'+b.hilo+' done" data-id="'+b.id+'" data-fecha="'+fecha+'">'+
-        '<input type="checkbox" class="chk" checked aria-label="marcar como no hecho">'+
-        '<div class="blk-main"><p class="blk-head">'+b.skill+'</p>'+
-        '<p class="blk-body">'+b.txt+'</p>'+material(b)+'</div></div>';
-    });
-    html += '<p class="sep">Lo que queda · desde '+reloj(inicio)+'</p>';
+    html += '<p class="sep">Hecho · '+dur(minHechos)+'</p>';
+    yaHechos.forEach(function(b){ html += tarjeta(b, null, fecha, true); });
+    html += '<p class="sep">Lo que queda</p>';
   }
 
   r.plan.forEach(function(it){
@@ -606,16 +580,8 @@ function pintarPlan(fecha, inicio, tope, titulo, modo){
       return;
     }
     total += minDe(it.b); bloques++;
-    var otroDia = it.b.fecha && it.b.fecha !== fecha;
-    html += '<div class="blk b-'+it.b.hilo+'" data-id="'+it.b.id+'" data-fecha="'+(it.b.fecha || fecha)+'">'+
-      '<input type="checkbox" class="chk" aria-label="marcar como hecho">'+
-      '<div class="blk-main">'+
-        '<p class="blk-head">'+reloj(it.ini)+" – "+reloj(it.fin)+" · "+it.b.skill+
-          (otroDia ? '<span class="from-day">del '+DIAS[diaDe(it.b.fecha)]+' '+parseInt(it.b.fecha.slice(8),10)+'</span>' : '')+'</p>'+
-        '<p class="blk-body">'+it.b.txt+'</p>'+
-        (it.b.why && it.b.why.length ? '<p class="why">Por qué ahora: '+it.b.why[0]+'.</p>' : '')+
-        material(it.b)+
-      '</div></div>';
+    fin = it.fin;
+    html += tarjeta(it.b, it, fecha, false);
   });
 
   if(r.perdidas.length && modo === "normal"){
@@ -631,7 +597,7 @@ function pintarPlan(fecha, inicio, tope, titulo, modo){
       var r2 = armar(listaPara(fecha, modo), inicio, tope + extra, comprimir, rg);
       if(r2.plan.filter(function(x){ return x.b; }).length > bloques){
         html += '<p class="note"><b>Con '+extra+' min más</b> (hasta las '+reloj(tope + extra)+') entra también '+r2.plan.filter(function(x){ return x.b; })[bloques].b.nombre+
-          (rg.seguido ? '.</p>' : '. Tus reglas piden un descanso largo después de cada par de bloques.</p>');
+          '.</p>';
         break;
       }
     }
@@ -639,8 +605,7 @@ function pintarPlan(fecha, inicio, tope, titulo, modo){
     html += '<p class="note"><b>No alcanzó el tiempo para '+r.fuera.length+' bloque'+
       (r.fuera.length===1?"":"s")+':</b> '+
       r.fuera.map(function(b){return b.nombre}).join(", ")+
-      '. Desde '+reloj(inicio)+' hasta '+reloj(tope)+' solo entran '+bloques+
-      '. Son los de menor prioridad para tu B2, por eso caen últimos. Mañana vuelve completo.</p>';
+      '.</p>';
   }
 
   var hechoMin = minHechos;
@@ -653,14 +618,10 @@ function pintarPlan(fecha, inicio, tope, titulo, modo){
       : '<p class="hint">No queda tiempo para ningún bloque completo. Haz solo Anki, aunque sean 20 minutos.</p>';
   }
   cont.innerHTML = html;
-  document.getElementById("hoyTit").textContent = titulo;
   document.getElementById("hoySub").textContent =
     DIAS[dia].charAt(0).toUpperCase()+DIAS[dia].slice(1)+" "+parseInt(fecha.slice(8),10)+
     (fecha !== hoyLogico() ? " (no es hoy)" : "")+
-    (hechoMin ? " · "+dur(hechoMin)+" hechas" : "")+
-    (!bloques && modo === "tiempo" ? " · ya no entra otro bloque" :
-      " · "+bloques+" bloque"+(bloques===1?"":"s")+" por delante, "+dur(total)+" desde "+reloj(inicio)+" hasta "+reloj(tope))+
-    (recortes ? " · descanso recortado para ganar un bloque" : "");
+    (bloques ? " · "+bloques+" bloque"+(bloques===1?"":"s")+" · "+reloj(inicio)+" a "+reloj(fin) : "");
 
   cont.querySelectorAll(".chk").forEach(function(c){
     c.addEventListener("change", function(){
@@ -708,15 +669,14 @@ function pintarPlan(fecha, inicio, tope, titulo, modo){
 function pintarStats(){
   var hechosHoy = estado.hechos[claveHoy()] || {}, fh = claveHoy();
   var minHoy = pool(diaDe(fh), fh).filter(function(b){ return hechosHoy[b.id]; }).reduce(function(n, b){ return n + minDe(b); }, 0);
-  document.getElementById("stHoy").textContent = dur(minHoy);
+  document.getElementById("stHoy").textContent = dur(fh === estado.hoy && estado.hoyMin != null ? Math.max(estado.hoyMin, minHoy) : minHoy);
   document.getElementById("stRacha").textContent = estado.racha || 0;
   // cuenta en minutos: un bloque de 50 ya mueve la barra, no hay que juntar una hora entera
   var min = estado.minutos || 0;
   var pct = Math.min(100, (min/(400*60))*100);
-  document.getElementById("stTotal").textContent = dur(min);
   document.getElementById("progBar").style.width = (min ? Math.max(pct, 0.7) : 0).toFixed(2)+"%";
   document.getElementById("progTxt").textContent =
-    dur(min)+" de 400 horas hacia B2 · "+pct.toFixed(1)+"% · faltan "+dur(Math.max(0, 400*60-min));
+    dur(min)+" de 400 h · "+pct.toFixed(1)+" %";
 }
 
 function ahoraMin(){ var d=new Date(); return d.getHours()*60+d.getMinutes(); }
@@ -724,7 +684,7 @@ function ahoraMin(){ var d=new Date(); return d.getHours()*60+d.getMinutes(); }
 function pintarAhora(){
   if(!vistaActual){ return; }
   if(vistaActual.fecha !== hoyLogico()){
-    document.getElementById("nowText").textContent = "Estás viendo el plan del "+DIAS[vistaActual.dia]+" "+parseInt(vistaActual.fecha.slice(8),10)+": marca lo que vayas haciendo.";
+    document.getElementById("nowText").textContent = "Plan del "+DIAS[vistaActual.dia]+" "+parseInt(vistaActual.fecha.slice(8),10);
     document.getElementById("nowTime").textContent = "";
     return;
   }
@@ -737,9 +697,10 @@ function pintarAhora(){
     if(m<it.ini){ sig=it; break; }
   }
   var t=document.getElementById("nowText"), h=document.getElementById("nowTime");
-  if(act){ t.textContent=act.b.txt; h.textContent="quedan "+(act.fin-m)+" min · hasta "+reloj(act.fin); }
-  else if(sig){ t.textContent="Libre. Sigue: "+sig.b.txt; h.textContent="arranca "+reloj(sig.ini); }
-  else { t.textContent="Día cerrado. A dormir."; h.textContent="mañana 8:00"; }
+  var nom = function(b){ return b.titulo || b.nombre; };
+  if(act){ t.textContent=nom(act.b); h.textContent="quedan "+(act.fin-m)+" min · hasta "+reloj(act.fin); }
+  else if(sig){ t.textContent="Sigue: "+nom(sig.b); h.textContent="a las "+reloj(sig.ini); }
+  else { t.textContent="Día cerrado."; h.textContent=""; }
 }
 
 /* ---------- arranque ---------- */
@@ -780,16 +741,11 @@ document.getElementById("inHasta").addEventListener("change", function(){
   if(m < CORTE) m += 1440;          // "hasta las 2:00" = madrugada del mismo día de estudio
   conTiempo(m, null);
 });
-document.getElementById("btnNormal").addEventListener("click", normal);
-document.getElementById("inExprime").addEventListener("change", function(){
-  var v = ultimaVista;
-  if(v){ pintarPlan(v.fecha, v.inicio, v.tope, v.titulo, v.modo); pintarAhora(); }
-});
 
 (function countdown(){
   var meta = new Date(2026,10,15), hoy = new Date();
   var dias = Math.ceil((meta-hoy)/86400000);
-  if(dias>0) document.getElementById("countdown").textContent = dias+" días";
+  document.getElementById("countdown").textContent = dias>0 ? dias+" días" : "hoy";
 })();
 
 normal();
